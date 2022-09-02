@@ -1,5 +1,8 @@
 package com.zensar.df.service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
 import com.zensar.df.dto.CategoryDto;
@@ -12,4 +15,13 @@ public class CategoryServiceImpl implements CategoryService {
 		categoryDto.setId(lastCategoryId);
 		return new CategoryDto(categoryDto.getId(),categoryDto.getName());
 	}
+	
+	@Override
+	public List<CategoryDto> GetAllCategories() {
+		categories.add(new CategoryDto(1,"Devops"));
+		categories.add(new CategoryDto(2,"Java"));
+		return categories;
+	}
+	
+	List<CategoryDto> categories = new ArrayList<CategoryDto>();
 }

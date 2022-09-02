@@ -21,6 +21,11 @@ public class CategoryDto {
 	public void setName(String name) {
 		this.name = name;
 	}
+	
+	@Override
+	public String toString() {
+		return "CategoryDto [id=" + id + ", name=" + name + "]";
+	}
 	private long id;
 	private String name;
 }
