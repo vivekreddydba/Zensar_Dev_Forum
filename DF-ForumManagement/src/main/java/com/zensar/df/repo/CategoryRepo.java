@@ -1,5 +1,9 @@
 package com.zensar.df.repo;
 
-public class CategoryRepo {
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import com.zensar.df.entity.CategoryEntity;
+
+public interface CategoryRepo extends JpaRepository<CategoryEntity, Long>{
 
 }
