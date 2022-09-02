@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.zensar.df.dto.CategoryDto;
-import com.zensar.df.services.CategoryService;
+import com.zensar.df.service.CategoryService;
 @RestController
 @CrossOrigin(origins="*")
 @RequestMapping(value="/devforum")

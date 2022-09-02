@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.zensar.df.dto.Userdto;
+import com.zensar.df.dto.UserDto;
 
 @RestController
 @CrossOrigin(origins="*")
@@ -28,7 +28,7 @@ public class UserController {
 	}
 	
 	@PostMapping(value = "/user", consumes= {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE},produces= {MediaType.APPLICATION_JSON_VALUE,MediaType.APPLICATION_XML_VALUE})
-	public Userdto registerUser(@RequestBody Userdto userdto) {
+	public UserDto registerUser(@RequestBody UserDto userdto) {
 		lastUserId = lastUserId+1;
 		userdto.setId(lastUserId);
 		users.add(userdto);
@@ -37,7 +37,7 @@ public class UserController {
 		
 	}
 	
-	static List<Userdto> users = new ArrayList<>();
+	static List<UserDto> users = new ArrayList<>();
 	static int lastUserId = 0;
 
 }

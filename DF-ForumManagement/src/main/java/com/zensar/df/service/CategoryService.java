@@ -1,4 +1,4 @@
-package com.zensar.df.services;
+package com.zensar.df.service;
 
 import com.zensar.df.dto.CategoryDto;
 

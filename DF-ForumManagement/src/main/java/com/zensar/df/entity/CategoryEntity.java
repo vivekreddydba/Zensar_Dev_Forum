@@ -1,4 +1,4 @@
-package com.zensar.df.entities;
+package com.zensar.df.entity;
 
 public class CategoryEntity {
 

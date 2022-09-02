@@ -1,5 +1,5 @@
 package com.zensar.df.dto;
 
-public class Forumdto {
+public class ForumDto {
 
 }

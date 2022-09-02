@@ -1,6 +1,6 @@
 package com.zensar.df.dto;
 
-public class Userdto {
+public class UserDto {
 	private int id;
 	private String firstname;
 	private String lastname;
@@ -9,11 +9,11 @@ public class Userdto {
 	private String email;
 	private int phone;
 	
-	public Userdto() {
+	public UserDto() {
 		super();
 	}
 	
-	public Userdto(int id, String firstname, String lastname, String username, String password, String email, int phone) {
+	public UserDto(int id, String firstname, String lastname, String username, String password, String email, int phone) {
 		super();
 		this.id = id;
 		this.firstname = firstname;
