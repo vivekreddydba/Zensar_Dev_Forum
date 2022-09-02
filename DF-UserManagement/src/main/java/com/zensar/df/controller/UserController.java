@@ -28,11 +28,11 @@ public class UserController {
 	}
 	
 	@PostMapping(value = "/user", consumes= {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE},produces= {MediaType.APPLICATION_JSON_VALUE,MediaType.APPLICATION_XML_VALUE})
-	public UserDto registerUser(@RequestBody UserDto userdto) {
+	public ResponseEntity<UserDto> registerUser(@RequestBody UserDto userdto) {
 		lastUserId = lastUserId+1;
 		userdto.setId(lastUserId);
 		users.add(userdto);
-		return userdto;
+		return new ResponseEntity(userdto,HttpStatus.OK);
 		
 		
 	}
