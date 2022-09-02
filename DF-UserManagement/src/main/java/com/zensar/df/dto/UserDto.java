@@ -7,13 +7,13 @@ public class UserDto {
 	private String username;
 	private String password;
 	private String email;
-	private int phone;
+	private long phone;
 	
 	public UserDto() {
 		super();
 	}
 	
-	public UserDto(int id, String firstname, String lastname, String username, String password, String email, int phone) {
+	public UserDto(int id, String firstname, String lastname, String username, String password, String email, long phone) {
 		super();
 		this.id = id;
 		this.firstname = firstname;
@@ -60,10 +60,10 @@ public class UserDto {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	public int getPhone() {
+	public long getPhone() {
 		return phone;
 	}
-	public void setPhone(int phone) {
+	public void setPhone(long phone) {
 		this.phone = phone;
 	}
 
