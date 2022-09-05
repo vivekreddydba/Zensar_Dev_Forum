@@ -6,7 +6,8 @@ import com.zensar.df.dto.CategoryDto;
 
 public interface CategoryService {
 
-	public CategoryDto createNewCategory(CategoryDto categoryDto);
+	public CategoryDto createNewCategory(CategoryDto categoryDto, String authToken);
 	 List<CategoryDto> GetAllCategories();
+	 public List<CategoryDto> getAllCategoriesById(Long id);
 
 }
