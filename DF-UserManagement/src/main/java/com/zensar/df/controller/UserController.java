@@ -45,6 +45,7 @@ public class UserController {
 					new UsernamePasswordAuthenticationToken(authRequest.getUsername(),authRequest.getPassword())
 					);
 		}
+		
 		catch(BadCredentialsException e) {
 			throw new BadCredentialsException(authRequest.getUsername());
 		}

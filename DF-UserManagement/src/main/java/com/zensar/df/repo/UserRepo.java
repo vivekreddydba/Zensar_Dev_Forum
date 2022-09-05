@@ -10,6 +10,7 @@ public interface UserRepo extends JpaRepository<UserEntity, Integer>{
 
 	List<UserEntity> findByUsername(String username);
 
+	
 }
 
 

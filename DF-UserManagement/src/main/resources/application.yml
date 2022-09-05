@@ -23,6 +23,7 @@ spring:
     user: 
       name: anand
       password: anand123
+ 
   mvc:
     pathmatch:
       matching-strategy: ant-path-matcher

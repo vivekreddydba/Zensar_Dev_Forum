@@ -28,8 +28,6 @@ public class UserServiceImpl implements UserService,UserDetailsService{
 		return userdto;
 	}
 	
-	
-	
 	static List<UserDto> users = new ArrayList<>();
 	static int lastUserId = 0;
 	@Override

@@ -26,6 +26,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	}
 	
 	
+	
 	@Override
 	public void configure(HttpSecurity http) throws Exception { // to override default authorization
 		http.csrf().disable()
