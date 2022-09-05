@@ -23,6 +23,8 @@ import com.zensar.df.dto.UserDto;
 import com.zensar.df.service.UserService;
 import com.zensar.df.utils.JwtUtils;
 
+import io.swagger.annotations.ApiOperation;
+
 @RestController
 @CrossOrigin(origins="*")
 @RequestMapping(value = "/devforum")
@@ -38,6 +40,7 @@ public class UserController {
 	JwtUtils jwtUtils;
 	
 	@PostMapping(value="/user/authenticate", consumes=MediaType.APPLICATION_JSON_VALUE)
+	@ApiOperation(value="Login a user/admin", notes="This request generates a unique jwt token for logging in")
 	public ResponseEntity<String> authenticate(@RequestBody UserDto authRequest){
 		System.out.println(authRequest);
 		try {
@@ -84,6 +87,7 @@ public class UserController {
 	static int lastUserId = 0;
 	
 	@PostMapping(value = "/user", consumes= {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE},produces= {MediaType.APPLICATION_JSON_VALUE,MediaType.APPLICATION_XML_VALUE})
+	@ApiOperation(value="Registration of a user", notes="This request saves the details of user in the database")
 	public ResponseEntity<UserDto> registerUser(@RequestBody UserDto userdto) {
 		UserDto user=userService.registerUser(userdto);
 		return new ResponseEntity<UserDto>(user,HttpStatus.OK);
@@ -91,6 +95,7 @@ public class UserController {
 	}
 	
 	@DeleteMapping(value="/user/logout",produces=MediaType.APPLICATION_JSON_VALUE)
+	@ApiOperation(value="Logout of a user", notes="This request moves the jwt token into blacklist and logs out the user")
 	public Boolean logoutUser(@RequestHeader("authorization") String authToken){
 		if(userService.logoutUser(authToken)) {
 			return true;

@@ -6,23 +6,23 @@ spring.jpa:
  show-sql: true
 
 spring:
-  datasource:
+   mvc:
+    pathmatch:
+     matching-strategy: ant-path-matcher
+   datasource:
     url: jdbc:mysql://localhost:3306/df-user-management
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: root
     password: Temp1234
-  jpa:
+   jpa:
     hibernate.ddl-auto: update
     properties:
       hibernate:
         dialect:org.hibernate.dialect.MySQL5Dialect
-  security:
+   security:
     user: 
       name: anand
       password: anand123
- 
-  mvc:
-    pathmatch:
-      matching-strategy: ant-path-matcher
+
 
  

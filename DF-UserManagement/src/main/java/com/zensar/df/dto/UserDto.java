@@ -1,12 +1,22 @@
 package com.zensar.df.dto;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+@ApiModel(value="User model has information about user")
 public class UserDto {
+	@ApiModelProperty(value="User ID")
 	private int id;
+	@ApiModelProperty(value="Firstname of the user")
 	private String firstname;
+	@ApiModelProperty(value="Lastname of the user")
 	private String lastname;
+	@ApiModelProperty(value="usrname of the user for login")
 	private String username;
+	@ApiModelProperty(value="Password of the user for login")
 	private String password;
+	@ApiModelProperty(value="Email address of the user")
 	private String email;
+	@ApiModelProperty(value="Phone Number of the user")
 	private long phone;
 	
 	public UserDto() {

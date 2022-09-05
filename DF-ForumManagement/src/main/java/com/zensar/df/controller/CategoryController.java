@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.zensar.df.dto.CategoryDto;
 import com.zensar.df.service.CategoryService;
+
+import io.swagger.annotations.ApiOperation;
 @RestController
 @CrossOrigin(origins="*")
 @RequestMapping(value="/devforum")
@@ -25,6 +27,7 @@ public class CategoryController {
 	@Autowired
 	private CategoryService categoryService;
 	@PostMapping(value="/category", consumes=MediaType.APPLICATION_JSON_VALUE, produces=MediaType.APPLICATION_JSON_VALUE)
+	@ApiOperation(value="New question category", notes="This request creates new question category")
 	public ResponseEntity<CategoryDto> createNewCategory(@RequestBody CategoryDto categoryDto, @RequestHeader(value="Authorization", required=false) String authToken) throws IOException {
 		CategoryDto categoryDTO = this.categoryService.createNewCategory(categoryDto,authToken);
 		if(categoryDto.getName()==null) {
@@ -34,6 +37,7 @@ public class CategoryController {
 	} 
 	
 	@GetMapping(value="/category",produces= MediaType.APPLICATION_JSON_VALUE)
+	@ApiOperation(value="Gets all categories", notes="This request returns all categories which are created in database")
 	public List<CategoryDto> GetAllCategories(){
 		
 		return categoryService.GetAllCategories();
@@ -41,6 +45,7 @@ public class CategoryController {
 	}
 	
 	@GetMapping(value="/category/{id}",produces= MediaType.APPLICATION_JSON_VALUE)
+	@ApiOperation(value="Gets category by ID", notes="This request returns specified category with id passed and present in database")
 	public List<CategoryDto> getAllCategoriesById(@PathVariable("id") Long id){
 		
 		return categoryService.getAllCategoriesById(id);

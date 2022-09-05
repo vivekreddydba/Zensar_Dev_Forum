@@ -2,6 +2,10 @@ package com.zensar.df.dto;
 
 import java.util.Objects;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
+@ApiModel(value="Category model has information about category")
 public class CategoryDto {
 	public CategoryDto(long id, String name) {
 		super();
@@ -28,7 +32,9 @@ public class CategoryDto {
 	public String toString() {
 		return "CategoryDto [id=" + id + ", name=" + name + "]";
 	}
+	@ApiModelProperty(value="Category ID")
 	private long id;
+	@ApiModelProperty(value="Category Name")
 	private String name;
 	@Override
 	public int hashCode() {
