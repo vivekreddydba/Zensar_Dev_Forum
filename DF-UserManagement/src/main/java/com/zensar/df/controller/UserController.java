@@ -51,6 +51,18 @@ public class UserController {
 		String jwtToken = jwtUtils.generateToken(authRequest.getUsername());
 		return new ResponseEntity<String>(jwtToken,HttpStatus.OK);
 		
+		
+		
+				
+	
+				
+				
+				
+				
+				
+				
+				
+				
 	}
 
 @GetMapping("/all")
