@@ -1,9 +1,12 @@
 package com.zensar.df.controller;
 
+import static org.hamcrest.CoreMatchers.containsString;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.longThat;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.util.ArrayList;
@@ -14,6 +17,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpHeaders;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
@@ -89,5 +93,39 @@ public class CategoryControllerTest {
 				.andReturn();
 		String response = mvcResult.getResponse().getContentAsString();
 		assertEquals(response.contains("[]"), true);
+	}
+	
+	@Test
+	public void testcreateNewCategory() throws Exception{
+		CategoryDto category = new CategoryDto();
+		category.setName("Jenkins & Devops");
+		HttpHeaders httpHeaders = new HttpHeaders();
+		httpHeaders.set("Authorization", "YD69425");
+		when(this.categoryService.createNewCategory(category, "YD69425")).thenReturn(category);
+		MvcResult mvcResult = this.mockMvc.perform(post("http://localhost:8001/devforum/category/")
+				.contentType("application/json")
+				.content(objectMapper.writeValueAsString(category))
+				.headers(httpHeaders)
+				).andExpect(status().isCreated())
+				.andExpect(content().string(containsString("Devops")))
+				.andReturn();
+				String response = mvcResult.getResponse().getContentAsString();
+				assertEquals(response.contains("Devops"), true);
+	}
+	@Test
+	public void test2createNewCategory() throws Exception{
+		CategoryDto category = new CategoryDto();
+		HttpHeaders httpHeaders = new HttpHeaders();
+		httpHeaders.set("Authorization", "YD69425");
+		when(this.categoryService.createNewCategory(category, "YD69425")).thenReturn(category);
+		MvcResult mvcResult = this.mockMvc.perform(post("http://localhost:8001/devforum/category/")
+				.contentType("application/json")
+				.content(objectMapper.writeValueAsString(category))
+				.headers(httpHeaders)
+				).andExpect(status().isBadRequest())
+				.andExpect(content().string(containsString("")))
+				.andReturn();
+				String response = mvcResult.getResponse().getContentAsString();
+				assertEquals(response.contains(""), true);
 	}
 }

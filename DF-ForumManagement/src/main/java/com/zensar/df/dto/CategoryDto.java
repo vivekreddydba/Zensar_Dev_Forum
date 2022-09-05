@@ -1,5 +1,7 @@
 package com.zensar.df.dto;
 
+import java.util.Objects;
+
 public class CategoryDto {
 	public CategoryDto(long id, String name) {
 		super();
@@ -28,4 +30,20 @@ public class CategoryDto {
 	}
 	private long id;
 	private String name;
+	@Override
+	public int hashCode() {
+		return Objects.hash(name);
+	}
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		CategoryDto other = (CategoryDto) obj;
+		return Objects.equals(name, other.name);
+	}
+
 }
