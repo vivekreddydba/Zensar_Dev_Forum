@@ -1,5 +1,6 @@
 package com.zensar.df.service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,7 +14,9 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.zensar.df.dto.UserDto;
+import com.zensar.df.entity.BlackListEntity;
 import com.zensar.df.entity.UserEntity;
+import com.zensar.df.repo.BlacklistRepo;
 import com.zensar.df.repo.UserRepo;
 
 @Service
@@ -30,13 +33,19 @@ public class UserServiceImpl implements UserService,UserDetailsService{
 	
 	static List<UserDto> users = new ArrayList<>();
 	static int lastUserId = 0;
+	
+	@Autowired
+	BlacklistRepo Blrepo;
 	@Override
 	public boolean logoutUser(String auth) {
-		if("A1B2C3D4".equals(auth)) {
+		if("A1B2C3D7".equals(auth)) {
+			BlackListEntity dbentity = new BlackListEntity(auth,LocalDate.now());
+			dbentity=Blrepo.save(dbentity);
 			return true;
 		}
 		return false;
 	}
+
 	@Autowired
 	UserRepo userRepo;
 	
