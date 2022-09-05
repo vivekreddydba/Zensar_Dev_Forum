@@ -23,14 +23,16 @@ import com.zensar.df.repo.UserRepo;
 public class UserServiceImpl implements UserService,UserDetailsService{
 
 	
+	@Autowired
+	UserRepo userRepo;
+
 	@Override
 	public UserDto registerUser(UserDto userdto) {
-		lastUserId = lastUserId+1;
-		userdto.setId(lastUserId);
-		users.add(userdto);
+		UserEntity userEntity=new UserEntity(userdto.getFirstname(), userdto.getLastname(), userdto.getUsername(), userdto.getPassword(), userdto.getEmail(), userdto.getPhone());
+		userEntity=userRepo.save(userEntity);
+		userdto=new UserDto(userEntity.getId(), userEntity.getFirst_name(), userEntity.getLast_name(), userEntity.getUsername(), userEntity.getPassword(), userEntity.getEmail(), userEntity.getPhone());
 		return userdto;
 	}
-	
 	static List<UserDto> users = new ArrayList<>();
 	static int lastUserId = 0;
 	
@@ -46,8 +48,6 @@ public class UserServiceImpl implements UserService,UserDetailsService{
 		return false;
 	}
 
-	@Autowired
-	UserRepo userRepo;
 	
 	
 	@Override

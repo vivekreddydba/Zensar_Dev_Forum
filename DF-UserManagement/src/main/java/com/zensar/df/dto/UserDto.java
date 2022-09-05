@@ -73,5 +73,12 @@ public class UserDto {
 		return "User [id=" + id + ", firstname=" + firstname + ", lastname=" + lastname + ", username=" + username
 				+ ", password=" + password + ", email=" + email + ", phone=" + phone + "]";
 	}
+	@Override
+	public boolean equals(Object obj) {
+		UserDto userDto = (UserDto)obj;
+		if(this.firstname.equals(userDto.getFirstname()))
+			return true;
+		return false;
+	}
 
 }

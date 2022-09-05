@@ -33,14 +33,14 @@ public class CategoryControllerTest {
 	@Test
 	public void testGetAllCategories() throws Exception {
 		List<CategoryDto> categoryDtoList = new ArrayList<CategoryDto>();
-		categoryDtoList.add(new CategoryDto());
-		categoryDtoList.add(new CategoryDto());
+		categoryDtoList.add(new CategoryDto(1,"Devops"));
+		categoryDtoList.add(new CategoryDto(2,"Python"));
 		
-		MvcResult mvcResult = this.mockMvc.perform(get("http://localhost:8080/devforum/category"))
+		MvcResult mvcResult = this.mockMvc.perform(get("http://localhost:8001/devforum/category"))
 				.andExpect(status().isOk())
 				.andReturn();
 		String response = mvcResult.getResponse().getContentAsString();
-		assertEquals(response.contains("title"), true);
+		assertEquals(response.contains("Devops"), true);
 
 }
 }

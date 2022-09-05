@@ -85,8 +85,8 @@ public class UserController {
 	
 	@PostMapping(value = "/user", consumes= {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE},produces= {MediaType.APPLICATION_JSON_VALUE,MediaType.APPLICATION_XML_VALUE})
 	public ResponseEntity<UserDto> registerUser(@RequestBody UserDto userdto) {
-		return new ResponseEntity(userService.registerUser(userdto),HttpStatus.OK);
-		
+		UserDto user=userService.registerUser(userdto);
+		return new ResponseEntity<UserDto>(user,HttpStatus.OK);
 		
 	}
 	
