@@ -48,6 +48,8 @@ public class CategoryController {
 	@ApiOperation(value="Gets category by ID", notes="This request returns specified category with id passed and present in database")
 	public List<CategoryDto> getAllCategoriesById(@PathVariable("id") Long id){
 		
+		
+		
 		return categoryService.getAllCategoriesById(id);
 	
 	

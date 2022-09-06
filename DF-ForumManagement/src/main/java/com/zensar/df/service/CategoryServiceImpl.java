@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import com.zensar.df.dto.CategoryDto;
 import com.zensar.df.entity.CategoryEntity;
+import com.zensar.df.exception.InvalidCategoryIdException;
 import com.zensar.df.repo.CategoryRepo;
 @Service
 public class CategoryServiceImpl implements CategoryService {
@@ -40,9 +41,14 @@ public class CategoryServiceImpl implements CategoryService {
 
 	@Override
 	public List<CategoryDto> getAllCategoriesById(Long id) {
-		System.out.println("Inside");
-		Optional<CategoryEntity> categoryEntities = categoryRepo.findById(id);
-		return categoryEntities.stream().map(i -> mapper.map(i, CategoryDto.class)).collect(Collectors.toList());
+		Optional<CategoryEntity> opcategoryEntities = categoryRepo.findById(id);
+		if(opcategoryEntities.isPresent()) {
+			CategoryEntity categoryEntity = opcategoryEntities.get();
+		
+			return opcategoryEntities.stream().map(i -> mapper.map(i, CategoryDto.class)).collect(Collectors.toList());
+			
+		}
+		throw new InvalidCategoryIdException("Catgory Id is not found:"+id);
 		
 	}
 }
