@@ -54,7 +54,7 @@ public class UserServiceImpl implements UserService,UserDetailsService{
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		// TODO Auto-generated method stub
 		// Write user Entity and UserRepo
-		List<UserEntity>userEntityList =userRepo.findByUsername(username);
+		List<UserEntity> userEntityList =userRepo.findByUsername(username);
 		if(userEntityList==null || userEntityList.size()==0) {
 			throw new UsernameNotFoundException(username);
 		}
