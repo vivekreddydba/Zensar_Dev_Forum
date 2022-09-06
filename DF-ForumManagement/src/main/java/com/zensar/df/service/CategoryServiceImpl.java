@@ -40,7 +40,6 @@ public class CategoryServiceImpl implements CategoryService {
 
 	@Override
 	public List<CategoryDto> getAllCategoriesById(Long id) {
-		System.out.println("Inside");
 		Optional<CategoryEntity> categoryEntities = categoryRepo.findById(id);
 		return categoryEntities.stream().map(i -> mapper.map(i, CategoryDto.class)).collect(Collectors.toList());
 		

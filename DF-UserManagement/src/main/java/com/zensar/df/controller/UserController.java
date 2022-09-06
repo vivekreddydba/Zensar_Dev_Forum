@@ -39,7 +39,7 @@ public class UserController {
 	@Autowired
 	JwtUtils jwtUtils;
 	
-	@PostMapping(value="/user/authenticate", consumes=MediaType.APPLICATION_JSON_VALUE)
+	@PostMapping(value="/user/authenticate", consumes={MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE},produces={MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
 	@ApiOperation(value="Login a user/admin", notes="This request generates a unique jwt token for logging in")
 	public ResponseEntity<String> authenticate(@RequestBody UserDto authRequest){
 		System.out.println(authRequest);
@@ -68,7 +68,7 @@ public class UserController {
 		
 	}
 	
-	@DeleteMapping(value="/user/logout",produces=MediaType.APPLICATION_JSON_VALUE)
+	@DeleteMapping(value="/user/logout",produces={MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
 	@ApiOperation(value="Logout of a user", notes="This request moves the jwt token into blacklist and logs out the user")
 	public Boolean logoutUser(@RequestHeader("authorization") String authToken){
 		if(userService.logoutUser(authToken)) {
