@@ -69,18 +69,7 @@ public class UserController {
 				
 	}
 
-@GetMapping("/all")
-	public String viewAll() {
-		return "hello All";
-	}
-	@GetMapping("/user")
-	public String viewUser() {
-		return "Hello User";
-	}
-	@GetMapping("/admin")
-	public String viewAdmin() {
-		return "Hello Admin";
-	}
+
 				
 	
 	static List<UserDto> users = new ArrayList<>();

@@ -33,13 +33,13 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 		.authorizeRequests()
 		.antMatchers("/devforum/admin").hasRole("ADMIN")
 		.antMatchers("/devforum/user").hasAnyRole("USER", "ADMIN")
-		.antMatchers("/devforum/all", "/user/authenticate", "/devforum/user").permitAll()
+		.antMatchers("/devforum/user/authenticate", "/devforum/user/logout").permitAll()
 		.and()
 		.formLogin();
 	}
 	
 	@Bean
-	public AuthenticationManager getauthenticationManager() throws Exception{
+	public AuthenticationManager getAuthenticationManager() throws Exception{
 		return super.authenticationManager();
 	}
 	 
