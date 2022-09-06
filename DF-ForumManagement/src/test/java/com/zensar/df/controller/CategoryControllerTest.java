@@ -109,8 +109,9 @@ public class CategoryControllerTest {
 				).andExpect(status().isCreated())
 				.andExpect(content().string(containsString("Devops")))
 				.andReturn();
-				String response = mvcResult.getResponse().getContentAsString();
-				assertEquals(response.contains("Devops"), true);
+	            String response = mvcResult.getResponse().getContentAsString();
+	            System.out.println(response);
+	            assertEquals(response.contains("Devops"), true);
 	}
 	@Test
 	public void test2createNewCategory() throws Exception{

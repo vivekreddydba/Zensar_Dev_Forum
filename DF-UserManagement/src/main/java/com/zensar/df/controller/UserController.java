@@ -53,25 +53,10 @@ public class UserController {
 			throw new BadCredentialsException(authRequest.getUsername());
 		}
 		String jwtToken = jwtUtils.generateToken(authRequest.getUsername());
-		return new ResponseEntity<String>(jwtToken,HttpStatus.OK);
-		
-		
-		
-				
-	
-				
-				
-				
-				
-				
-				
+		return new ResponseEntity<String>(jwtToken,HttpStatus.OK);	
 				
 				
 	}
-
-
-				
-	
 	static List<UserDto> users = new ArrayList<>();
 	static int lastUserId = 0;
 	
