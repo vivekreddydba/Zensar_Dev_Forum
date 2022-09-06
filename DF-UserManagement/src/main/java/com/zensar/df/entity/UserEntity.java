@@ -109,7 +109,4 @@ public class UserEntity {
 				+ username + ", password=" + password + ", email=" + email + ", phone=" + phone + ", roles=" + roles
 				+ "]";
 	}
-	
-	
-
 }

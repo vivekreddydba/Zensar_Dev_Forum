@@ -64,6 +64,9 @@ public class UserController {
 	@ApiOperation(value="Registration of a user", notes="This request saves the details of user in the database")
 	public ResponseEntity<UserDto> registerUser(@RequestBody UserDto userdto) {
 		UserDto user=userService.registerUser(userdto);
+		if(userdto.getUsername()=="" || userdto.getPassword()=="" || userdto.getFirstname()=="") {
+			return new ResponseEntity<UserDto>(HttpStatus.BAD_REQUEST);
+		}
 		return new ResponseEntity<UserDto>(user,HttpStatus.OK);
 		
 	}

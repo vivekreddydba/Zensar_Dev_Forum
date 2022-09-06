@@ -33,7 +33,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 		.authorizeRequests()
 		.antMatchers("/devforum/admin").hasRole("ADMIN")
 		.antMatchers("/devforum/user").hasAnyRole("USER", "ADMIN")
-		.antMatchers("/devforum/user/authenticate", "/devforum/user/logout").permitAll()
+		.antMatchers("/devforum/user/authenticate", "/devforum/user/logout", "/devforum/user").permitAll()
 		.and()
 		.formLogin();
 	}

@@ -65,7 +65,7 @@ public class UserControllerTest {
 	@Test
 	public void testRegisterUserBlankFirstName() throws Exception{
 		UserDto user = new UserDto();
-		user.setFirstname("Anand");
+		user.setFirstname("");
 		user.setLastname("Kulkarni");
 		user.setUsername("anand");
 		user.setPassword("anand123");
@@ -78,5 +78,7 @@ public class UserControllerTest {
 				).andExpect(status().isBadRequest())
 				.andReturn();
 	}
+	
+	
 	
 }
