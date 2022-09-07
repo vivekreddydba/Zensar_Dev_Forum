@@ -51,7 +51,8 @@ public class UserController {
 		}
 		
 		catch(BadCredentialsException e) {
-			throw new BadCredentialsException(authRequest.getUsername());
+			//throw new BadCredentialsException(authRequest.getUsername());
+			return new ResponseEntity<String>(HttpStatus.BAD_REQUEST);
 		}
 		String jwtToken = jwtUtils.generateToken(authRequest.getUsername());
 		return new ResponseEntity<>(jwtToken,HttpStatus.OK);	
