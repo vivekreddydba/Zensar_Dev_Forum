@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -18,13 +20,18 @@ import com.zensar.df.entity.BlackListEntity;
 import com.zensar.df.entity.UserEntity;
 import com.zensar.df.repo.BlacklistRepo;
 import com.zensar.df.repo.UserRepo;
+import com.zensar.df.utils.JwtUtils;
 
 @Service
-public class UserServiceImpl implements UserService,UserDetailsService{
+public class UserServiceImpl implements UserService, UserDetailsService{
 
 	
 	@Autowired
 	UserRepo userRepo;
+	
+	@Autowired
+	JwtUtils jwtUtils;
+	
 
 	@Override
 	public UserDto registerUser(UserDto userdto) {
@@ -38,16 +45,13 @@ public class UserServiceImpl implements UserService,UserDetailsService{
 	
 	@Autowired
 	BlacklistRepo Blrepo;
+	
 	@Override
-	public boolean logoutUser(String auth) {
-		if("A1B2C3D7".equals(auth)) {
-			BlackListEntity dbentity = new BlackListEntity(auth,LocalDate.now());
-			dbentity=Blrepo.save(dbentity);
-			return true;
-		}
-		return false;
-	}
-
+    public Boolean logoutUser(String auth) {
+    	BlackListEntity be=new BlackListEntity(auth, LocalDate.now());
+    	be=Blrepo.save(be);
+    	return true;
+    }
 	
 	
 	@Override

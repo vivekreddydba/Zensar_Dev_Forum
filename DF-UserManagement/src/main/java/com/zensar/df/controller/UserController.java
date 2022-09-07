@@ -91,15 +91,16 @@ public class UserController {
 		
 	}
 	
-	@DeleteMapping(value="/user/logout",produces={MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
+	@DeleteMapping(value="/user/logout")
 	@ApiOperation(value="Logout of a user", notes="This request moves the jwt token into blacklist and logs out the user")
-	public Boolean logoutUser(@RequestHeader("authorization") String authToken){
-		if(userService.logoutUser(authToken)) {
-			return true;
+	public ResponseEntity<Boolean> logoutUser(@RequestHeader("Authorization") String jwtToken) {
+		boolean isTokenValid = this.isTokenValid(jwtToken).getBody();
+		if(isTokenValid) {
+			userService.logoutUser(jwtToken);
+			return new ResponseEntity<Boolean>(true,HttpStatus.OK);
 		}
-		return false;
-		
-	}
+		return new ResponseEntity<Boolean>(false,HttpStatus.BAD_REQUEST);
+    }
 	
 
 }
