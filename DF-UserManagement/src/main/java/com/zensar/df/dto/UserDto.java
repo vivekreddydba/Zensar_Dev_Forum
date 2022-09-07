@@ -18,12 +18,14 @@ public class UserDto {
 	private String email;
 	@ApiModelProperty(value="Phone Number of the user")
 	private long phone;
+	@ApiModelProperty(value="Role")
+	private String role;
 	
 	public UserDto() {
 		super();
 	}
 	
-	public UserDto(int id, String firstname, String lastname, String username, String password, String email, long phone) {
+	public UserDto(int id, String firstname, String lastname, String username, String password, String email, long phone, String role) {
 		super();
 		this.id = id;
 		this.firstname = firstname;
@@ -32,6 +34,7 @@ public class UserDto {
 		this.password = password;
 		this.email = email;
 		this.phone = phone;
+		this.role=role;
 	}
 
 	
@@ -78,11 +81,21 @@ public class UserDto {
 		this.phone = phone;
 	}
 
+	public String getRole() {
+		return role;
+	}
+
+	public void setRole(String role) {
+		this.role = role;
+	}
+
+	
 	@Override
 	public String toString() {
-		return "User [id=" + id + ", firstname=" + firstname + ", lastname=" + lastname + ", username=" + username
-				+ ", password=" + password + ", email=" + email + ", phone=" + phone + "]";
+		return "UserDto [id=" + id + ", firstname=" + firstname + ", lastname=" + lastname + ", username=" + username
+				+ ", password=" + password + ", email=" + email + ", phone=" + phone + ", role=" + role + "]";
 	}
+
 	@Override
 	public boolean equals(Object obj) {
 		UserDto userDto = (UserDto)obj;

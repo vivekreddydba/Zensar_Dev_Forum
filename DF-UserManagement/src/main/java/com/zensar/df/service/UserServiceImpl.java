@@ -28,9 +28,9 @@ public class UserServiceImpl implements UserService,UserDetailsService{
 
 	@Override
 	public UserDto registerUser(UserDto userdto) {
-		UserEntity userEntity=new UserEntity(userdto.getFirstname(), userdto.getLastname(), userdto.getUsername(), userdto.getPassword(), userdto.getEmail(), userdto.getPhone());
+		UserEntity userEntity=new UserEntity(userdto.getFirstname(), userdto.getLastname(), userdto.getUsername(), userdto.getPassword(), userdto.getEmail(), userdto.getPhone(), userdto.getRole());
 		userEntity=userRepo.save(userEntity);
-		userdto=new UserDto(userEntity.getId(), userEntity.getFirst_name(), userEntity.getLast_name(), userEntity.getUsername(), userEntity.getPassword(), userEntity.getEmail(), userEntity.getPhone());
+		userdto=new UserDto(userEntity.getId(), userEntity.getFirst_name(), userEntity.getLast_name(), userEntity.getUsername(), userEntity.getPassword(), userEntity.getEmail(), userEntity.getPhone(), userEntity.getRoles());
 		return userdto;
 	}
 	static List<UserDto> users = new ArrayList<>();

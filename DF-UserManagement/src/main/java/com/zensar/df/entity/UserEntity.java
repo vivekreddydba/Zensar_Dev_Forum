@@ -33,7 +33,7 @@ public class UserEntity {
 	
 	public UserEntity() {}
 	public UserEntity(String first_name, String last_name, String username, String password, String email,
-			long phone) {
+			long phone, String roles) {
 		super();
 		this.first_name = first_name;
 		this.last_name = last_name;
@@ -41,11 +41,12 @@ public class UserEntity {
 		this.password = password;
 		this.email = email;
 		this.phone = phone;
+		this.roles=roles;
 	}
 
 	
 	public UserEntity(int id, String first_name, String last_name, String username, String password, String email,
-			long phone) {
+			long phone, String roles) {
 		super();
 		this.id = id;
 		this.first_name = first_name;
@@ -54,6 +55,7 @@ public class UserEntity {
 		this.password = password;
 		this.email = email;
 		this.phone = phone;
+		this.roles=roles;
 	}
 	public int getId() {
 		return id;
