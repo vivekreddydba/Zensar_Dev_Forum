@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -53,9 +54,27 @@ public class UserController {
 			throw new BadCredentialsException(authRequest.getUsername());
 		}
 		String jwtToken = jwtUtils.generateToken(authRequest.getUsername());
-		return new ResponseEntity<String>(jwtToken,HttpStatus.OK);	
+		return new ResponseEntity<>(jwtToken,HttpStatus.OK);	
 				
 				
+	}
+	@GetMapping(value="/token/validate", produces={MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
+	public ResponseEntity<Boolean> isTokenValid(@RequestHeader("Authorization") String jwtToken) {
+		jwtToken = jwtToken.substring(7, jwtToken.length());
+		boolean isTokenValid = false;
+		try {
+			String username = jwtUtils.extractUsername(jwtToken);
+			UserDetails userDetails = userService.loadUserByUsername(username);
+			isTokenValid = jwtUtils.validateToken(jwtToken, userDetails);
+		}
+		catch(Exception e) {
+			return new ResponseEntity<Boolean>(false, HttpStatus.BAD_REQUEST);
+		}
+		if(isTokenValid) {
+			return new ResponseEntity<Boolean>(true, HttpStatus.OK);
+		}else {
+			return new ResponseEntity<Boolean>(false, HttpStatus.BAD_REQUEST);
+		}
 	}
 	static List<UserDto> users = new ArrayList<>();
 	static int lastUserId = 0;
@@ -64,9 +83,6 @@ public class UserController {
 	@ApiOperation(value="Registration of a user", notes="This request saves the details of user in the database")
 	public ResponseEntity<UserDto> registerUser(@RequestBody UserDto userdto) {
 		UserDto user=userService.registerUser(userdto);
-		if(userdto.getUsername()=="" || userdto.getPassword()=="" || userdto.getFirstname()=="") {
-			return new ResponseEntity<UserDto>(HttpStatus.BAD_REQUEST);
-		}
 		return new ResponseEntity<UserDto>(user,HttpStatus.OK);
 		
 	}
