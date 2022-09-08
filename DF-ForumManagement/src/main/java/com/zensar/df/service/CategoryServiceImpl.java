@@ -60,7 +60,7 @@ public class CategoryServiceImpl implements CategoryService {
 		
 	}
 	@Override
-	public ResponseEntity<Boolean> DeleteCategoryById(Long id){
+	public ResponseEntity<Boolean> DeleteCategoryById(Long id, String  auth){
 		if(categoryRepo.existsById(id)) {
 			CategoryEntity temp=categoryRepo.getById(id);
 			categoryRepo.delete(temp);

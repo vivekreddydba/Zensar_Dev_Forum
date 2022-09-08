@@ -66,8 +66,8 @@ public class CategoryController {
     }
 	@DeleteMapping(value="/category/{id}")
 	@ApiOperation(value="Deletes category by ID", notes= "This request deletes specifies category with mentioned Id BY THE USER that is present in the database")
-	public ResponseEntity<Boolean> DeleteCategoryById(@PathVariable("id") long id){
-		return categoryService.DeleteCategoryById(id);
+	public ResponseEntity<Boolean> DeleteCategoryById(@RequestHeader("Authorization") String authToken,@PathVariable("id") long id ){
+		return categoryService.DeleteCategoryById(id,authToken);
 	}
 }
 
