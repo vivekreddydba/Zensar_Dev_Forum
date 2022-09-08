@@ -82,7 +82,7 @@ public class CategoryServiceImpl implements CategoryService {
 		
 		CategoryEntity categoryEntity = categoryRepo.getById(categoryId);
 	
-		if (categoryEntity!=null){
+		if(categoryRepo.existsById(categoryId)){
 
 			categoryEntity.setName(category.getName());
 
