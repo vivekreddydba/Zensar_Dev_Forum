@@ -1,6 +1,7 @@
 package com.zensar.df.entity;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -21,15 +22,15 @@ public class BlackListEntity {
 	@Column(name="token")
 	private String token;
 	@Column(name="Created_date")
-	private LocalDate createddate;
+	private LocalDateTime createddate;
 	public BlackListEntity() {}
-	public BlackListEntity( String token, LocalDate createddate) {
+	public BlackListEntity( String token, LocalDateTime createddate) {
 		super();
 		this.token = token;
 		this.createddate = createddate;
 	}
 	
-	public BlackListEntity(int id, String token, LocalDate createddate) {
+	public BlackListEntity(int id, String token, LocalDateTime createddate) {
 		super();
 		this.id = id;
 		this.token = token;
@@ -47,10 +48,10 @@ public class BlackListEntity {
 	public void setToken(String token) {
 		this.token = token;
 	}
-	public LocalDate getCreateddate() {
+	public LocalDateTime getCreateddate() {
 		return createddate;
 	}
-	public void setCreateddate(LocalDate createddate) {
+	public void setCreateddate(LocalDateTime createddate) {
 		this.createddate = createddate;
 	}
 	@Override

@@ -1,7 +1,6 @@
 package com.zensar.df.controller;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +11,6 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,6 +20,7 @@ import com.zensar.df.dto.CategoryDto;
 import com.zensar.df.service.CategoryService;
 
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 @RestController
 @CrossOrigin(origins="*")
 @RequestMapping(value="/devforum")
@@ -48,7 +47,7 @@ public class CategoryController {
 	
 	@GetMapping(value="/category/{id}",produces= {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
 	@ApiOperation(value="Gets category by ID", notes="This request returns specified category with id passed and present in database")
-	public List<CategoryDto> getAllCategoriesById(@PathVariable("id") Long id){
+	public List<CategoryDto> getAllCategoriesById(@ApiParam(value="Category ID",required=true)  @PathVariable("id") Long id){
 		
 		
 		

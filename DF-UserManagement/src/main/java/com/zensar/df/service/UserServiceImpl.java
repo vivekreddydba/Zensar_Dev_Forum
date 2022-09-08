@@ -1,6 +1,7 @@
 package com.zensar.df.service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,7 +49,7 @@ public class UserServiceImpl implements UserService, UserDetailsService{
 	
 	@Override
     public Boolean logoutUser(String auth) {
-    	BlackListEntity be=new BlackListEntity(auth, LocalDate.now());
+    	BlackListEntity be=new BlackListEntity(auth, LocalDateTime.now());
     	be=Blrepo.save(be);
     	return true;
     }

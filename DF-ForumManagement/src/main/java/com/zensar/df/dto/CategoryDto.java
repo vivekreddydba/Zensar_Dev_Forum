@@ -2,10 +2,13 @@ package com.zensar.df.dto;
 
 import java.util.Objects;
 
+import org.springframework.stereotype.Component;
+
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 @ApiModel(value="Category model has information about category")
+@Component
 public class CategoryDto {
 	public CategoryDto(long id, String name) {
 		super();
