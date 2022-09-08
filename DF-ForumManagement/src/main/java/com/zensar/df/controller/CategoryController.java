@@ -59,7 +59,7 @@ public class CategoryController {
 	@PutMapping(value="/category/{id}", consumes={MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE}, produces={MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
 	@ApiOperation(value="Updates category by ID", notes="This request updates specified category with name passed and present in database")
 	public ResponseEntity<CategoryDto> updateCategory(@RequestHeader("Authorization") String authToken, @PathVariable("id") Long id, @RequestBody CategoryDto category){
-		if(!category.getName().equals("")) {
+		if(!"".equals(category.getName())) {
 		   return new ResponseEntity<CategoryDto>(categoryService.updateCategory(id, category, authToken), HttpStatus.OK);
 		}
 		return new ResponseEntity<CategoryDto>(HttpStatus.BAD_REQUEST);

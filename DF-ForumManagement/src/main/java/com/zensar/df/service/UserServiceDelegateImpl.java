@@ -19,10 +19,16 @@ public class UserServiceDelegateImpl implements UserServiceDelegate{
 		HttpHeaders header=new HttpHeaders();
 		header.set("Authorization", authToken);
 		HttpEntity entity=new HttpEntity(header);
-		ResponseEntity<Boolean> result =
-	            this.restTemplate.exchange("http://localhost:8000/devforum/token/validate",  
-	                    HttpMethod.GET, entity, Boolean.class);
-	        return result.getBody();
+		
+		try {
+			ResponseEntity<Boolean> result =
+		            this.restTemplate.exchange("http://localhost:8000/devforum/token/validate",  
+		                    HttpMethod.GET, entity, Boolean.class);
+		}
+		catch(Exception e) {
+			return false;
+		}
+	    return true;
 				
 	}
 

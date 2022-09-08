@@ -91,6 +91,6 @@ public class CategoryServiceImpl implements CategoryService {
             return new CategoryDto(updatedCategory.getId(), updatedCategory.getName());
         }
         
-		throw new NullPointerException();
+		throw new InvalidCategoryIdException(""+categoryId);
 	}
 }
