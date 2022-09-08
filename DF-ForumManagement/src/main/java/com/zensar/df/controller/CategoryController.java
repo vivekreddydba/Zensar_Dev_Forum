@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -52,9 +53,15 @@ public class CategoryController {
 		
 		
 		return categoryService.getAllCategoriesById(id);
+	}
 	
-	
-	
-}
+	@PutMapping(value="/category/{id}", consumes={MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE}, produces={MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
+	@ApiOperation(value="Updates category by ID", notes="This request updates specified category with name passed and present in database")
+	public ResponseEntity<CategoryDto> updateCategory(@RequestHeader("Authorization") String authToken, @PathVariable("id") Long id, @RequestBody CategoryDto category){
+		if(!category.getName().equals("")) {
+		   return new ResponseEntity<CategoryDto>(categoryService.updateCategory(id, category, authToken), HttpStatus.OK);
+		}
+		return new ResponseEntity<CategoryDto>(HttpStatus.BAD_REQUEST);
+    }
 }
 

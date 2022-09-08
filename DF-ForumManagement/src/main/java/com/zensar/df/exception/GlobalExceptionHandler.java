@@ -21,6 +21,13 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 		return handleExceptionInternal(exception, exception.toString(), new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
 		
 	}
+	@ExceptionHandler(value = InvalidAuthorizationTokenException.class)
+	public ResponseEntity<Object> handleTokenError(RuntimeException exception, WebRequest request){
+		String bodyOfResponse = exception.toString();
+		return handleExceptionInternal(exception, bodyOfResponse,
+				new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
+		
+	}
 	
 
 }

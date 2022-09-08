@@ -22,7 +22,4 @@ spring:
    security:
     user: 
       name: anand
-      password: anand123
-
-
- 
+      password: anand123  

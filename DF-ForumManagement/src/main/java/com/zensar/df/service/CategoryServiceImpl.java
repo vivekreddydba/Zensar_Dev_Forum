@@ -1,6 +1,6 @@
 package com.zensar.df.service;
 
-import java.util.ArrayList;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import com.zensar.df.dto.CategoryDto;
 import com.zensar.df.entity.CategoryEntity;
+import com.zensar.df.exception.InvalidAuthorizationTokenException;
 import com.zensar.df.exception.InvalidCategoryIdException;
 import com.zensar.df.repo.CategoryRepo;
 @Service
@@ -22,7 +23,12 @@ public class CategoryServiceImpl implements CategoryService {
 	CategoryEntity categoryEntity;
 	@Autowired
 	ModelMapper mapper;
+	
+	@Autowired
+	UserServiceDelegate userServiceDelegate;
+	
 	int lastCategoryId=0;
+	
 	@Override
 	public CategoryDto createNewCategory(CategoryDto categoryDto, String authToken) {
 		lastCategoryId = lastCategoryId+1;
@@ -50,5 +56,27 @@ public class CategoryServiceImpl implements CategoryService {
 		}
 		throw new InvalidCategoryIdException("Catgory Id is not found:"+id);
 		
+	}
+	
+	@Override
+	public CategoryDto updateCategory(long categoryId, CategoryDto category, String auth) {
+		
+		if(!userServiceDelegate.isLoggedInUser(auth)) {
+			
+			throw new InvalidAuthorizationTokenException(auth);
+		}
+		
+		CategoryEntity categoryEntity = categoryRepo.getById(categoryId);
+	
+		if (categoryEntity!=null){
+
+			categoryEntity.setName(category.getName());
+
+            CategoryEntity updatedCategory = categoryRepo.save(categoryEntity);
+
+            return new CategoryDto(updatedCategory.getId(), updatedCategory.getName());
+        }
+        
+		throw new NullPointerException();
 	}
 }
