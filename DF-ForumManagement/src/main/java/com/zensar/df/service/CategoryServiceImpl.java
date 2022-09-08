@@ -7,6 +7,8 @@ import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.zensar.df.dto.CategoryDto;
@@ -56,6 +58,18 @@ public class CategoryServiceImpl implements CategoryService {
 		}
 		throw new InvalidCategoryIdException("Catgory Id is not found:"+id);
 		
+	}
+	@Override
+	public ResponseEntity<Boolean> DeleteCategoryById(Long id){
+		if(categoryRepo.existsById(id)) {
+			CategoryEntity temp=categoryRepo.getById(id);
+			categoryRepo.delete(temp);
+			return new ResponseEntity<Boolean>(true, HttpStatus.OK);
+		}
+		
+		return new ResponseEntity<Boolean>(false, HttpStatus.BAD_REQUEST);
+		
+				
 	}
 	
 	@Override
