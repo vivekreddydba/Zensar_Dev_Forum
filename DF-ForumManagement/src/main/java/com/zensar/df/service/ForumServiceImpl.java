@@ -2,11 +2,15 @@ package com.zensar.df.service;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.zensar.df.dto.CategoryDto;
 import com.zensar.df.dto.ForumDto;
 import com.zensar.df.entity.ForumEntity;
+import com.zensar.df.exception.InvalidAuthorizationTokenException;
+import com.zensar.df.exception.InvalidqusIdException;
 import com.zensar.df.repo.ForumRepo;
 
 @Service
@@ -21,6 +25,13 @@ public class ForumServiceImpl implements ForumService{
     ForumDto forumDto;
     @Autowired
     ForumEntity forumEntity;
+    
+    @Autowired
+    ForumRepo forumrepo;
+    
+    @Autowired
+	UserServiceDelegate userServiceDelegate;
+    
 	int lastQuestionid=0;
 	//String question=forumDto.getQuestion();
 	@Override
@@ -32,6 +43,24 @@ public class ForumServiceImpl implements ForumService{
 		forumDto = mapper.map(forumEntity,ForumDto.class);
 		return forumDto;
 		//return new ForumDto(forumDto.getQuestionId(),forumDto.getQuestion(),true,forumDto.getAnswers());
+	}
+	
+	@Override
+	public boolean deleteQuestionbyId(long questionId,String auth) {
+       if(!userServiceDelegate.isLoggedInUser(auth)) {
+			
+			throw new InvalidAuthorizationTokenException(auth);
+       }
+		
+		if(forumrepo.existsById(questionId)) {
+			forumrepo.deleteById(questionId);
+		    return true;
+		}
+		return false;
+		
+		//throw new InvalidqusIdException (""+questionId);
+		
+		
 	}
 
 }
