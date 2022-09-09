@@ -11,6 +11,7 @@ import com.zensar.df.dto.ForumDto;
 import com.zensar.df.entity.ForumEntity;
 import com.zensar.df.exception.InvalidAuthorizationTokenException;
 import com.zensar.df.exception.InvalidCategoryIdException;
+import com.zensar.df.exception.InvalidQuestionIdException;
 import com.zensar.df.exception.InvalidqusIdException;
 import org.springframework.stereotype.Service;
 import com.zensar.df.entity.CategoryEntity;
@@ -77,7 +78,8 @@ public class ForumServiceImpl implements ForumService{
 		
 		ForumEntity forumEntity = forumRepo.getById(questionId);
 
-		if (forumEntity!=null){
+		if(forumRepo.existsById(questionId)){
+
 
 			forumEntity.setQuestion(forum.getQuestion());
 
@@ -86,7 +88,7 @@ public class ForumServiceImpl implements ForumService{
 	        return new ForumDto(updatedquestion.getQuestionid(), updatedquestion.getQuestion());
 	    }
 	    
-		throw new InvalidCategoryIdException(""+questionId);
+		throw new InvalidQuestionIdException(""+questionId);
 	}
 	}
 
