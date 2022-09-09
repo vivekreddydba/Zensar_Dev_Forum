@@ -1,5 +1,7 @@
 package com.zensar.df.dto;
 
+import java.util.Objects;
+
 import org.springframework.stereotype.Component;
 
 import io.swagger.annotations.ApiModelProperty;
@@ -15,6 +17,8 @@ public class ForumDto {
 	private String answers;
 	@ApiModelProperty(value="Category ID")
 	private long categoryid;
+	
+	
 	public long getQuestionId() {
 		return questionId;
 	}
@@ -45,6 +49,7 @@ public class ForumDto {
 	public void setCategoryid(long categoryid) {
 		this.categoryid = categoryid;
 	}
+	public ForumDto() {}
 	public ForumDto(long questionId, String question, boolean status, String answers, long categoryid) {
 		super();
 		this.questionId = questionId;
@@ -53,14 +58,27 @@ public class ForumDto {
 		this.answers = answers;
 		this.categoryid = categoryid;
 	}
-	public ForumDto() {
+	public ForumDto(long questionId, String question) {
 		super();
+		this.questionId = questionId;
+		this.question = question;
 	}
 	@Override
 	public String toString() {
 		return "ForumDto [questionId=" + questionId + ", question=" + question + ", status=" + status + ", answers="
 				+ answers + ", categoryid=" + categoryid + "]";
 	}
-
-
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		ForumDto other = (ForumDto) obj;
+		return Objects.equals(question, other.question);
+	}
 }
+
+

@@ -10,7 +10,10 @@ import com.zensar.df.dto.CategoryDto;
 import com.zensar.df.dto.ForumDto;
 import com.zensar.df.entity.ForumEntity;
 import com.zensar.df.exception.InvalidAuthorizationTokenException;
+import com.zensar.df.exception.InvalidCategoryIdException;
 import com.zensar.df.exception.InvalidqusIdException;
+import org.springframework.stereotype.Service;
+import com.zensar.df.entity.CategoryEntity;
 import com.zensar.df.repo.ForumRepo;
 
 @Service
@@ -63,4 +66,28 @@ public class ForumServiceImpl implements ForumService{
 		
 	}
 
-}
+	
+	@Override
+	public ForumDto updateQuestion(long questionId, ForumDto forum, String auth) {
+		
+		if(!userServiceDelegate.isLoggedInUser(auth)) {
+			
+			throw new InvalidAuthorizationTokenException(auth);
+		}
+		
+		ForumEntity forumEntity = forumRepo.getById(questionId);
+
+		if (forumEntity!=null){
+
+			forumEntity.setQuestion(forum.getQuestion());
+
+	        ForumEntity updatedquestion = forumRepo.save(forumEntity);
+
+	        return new ForumDto(updatedquestion.getQuestionid(), updatedquestion.getQuestion());
+	    }
+	    
+		throw new InvalidCategoryIdException(""+questionId);
+	}
+	}
+
+

@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -52,5 +53,14 @@ public class ForumController {
 		return new ResponseEntity<>(false,HttpStatus.BAD_REQUEST);
 	}
 	
+	@PutMapping(value="/question/{id}", consumes={MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE}, produces={MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
+	@ApiOperation(value="Update question", notes="This request updates specified forum with name passed and present in database")
+	public ResponseEntity<ForumDto> updateQuestion(@RequestHeader("Authorization") String authToken, @PathVariable("id") Long id, @RequestBody ForumDto question){
+		if(question.getQuestion()!=null) {
+		   return new ResponseEntity<ForumDto>(forumService.updateQuestion(id,  question, authToken), HttpStatus.OK);
+		}
+		return new ResponseEntity<ForumDto>(HttpStatus.BAD_REQUEST);
+    }
+    
 	
 }

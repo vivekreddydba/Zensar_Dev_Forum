@@ -3,6 +3,7 @@ package com.zensar.df.controller;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 //import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -55,5 +56,58 @@ public class ForumControllerTest {
 		String response=mvcResult.getResponse().getContentAsString();
 		assertEquals("false".equals(response), true);
 	}
-
+/*	@Test
+	public void testUpdateQuestion() throws Exception{
+		ForumDto question=new ForumDto();
+		question.setQuestion("Docker");
+        HttpHeaders httpHeaders=new HttpHeaders();
+		httpHeaders.set("Authorization", "A1B2C3");
+		question.setQuestionId(3);
+		when(this.forumservice.updateQuestion(question.getQuestionId(), question, "A1B2C3")).thenReturn(question);
+		MvcResult mvcResult = this.mockmvc.perform(put("http://localhost:8001/devforum/question/3")
+				.contentType("application/json")
+				.content(objectMapper.writeValueAsString(question))
+				.headers(httpHeaders)
+				).andExpect(status().isOk())
+				.andExpect(content().string(containsString("Docker")))
+				.andReturn();
+		        String response = mvcResult.getResponse().getContentAsString();
+		        assertEquals(response.contains("Docker"), true);
+		 
+	}*/
+	@Test
+	public void testUpdateQuestion() throws Exception{
+		ForumDto f=new ForumDto();
+		f.setQuestion("HTML");
+        HttpHeaders httpHeaders=new HttpHeaders();
+		httpHeaders.set("Authorization", "A1B2C3");
+		//category.setId(3);
+		when(this.forumservice.updateQuestion(3, f, "A1B2C3")).thenReturn(f);
+		MvcResult mvcResult = this.mockmvc.perform(put("http://localhost:8001/devforum/question/3")
+				.contentType("application/json")
+				.content(objectMapper.writeValueAsString(f))
+				.headers(httpHeaders)
+				).andExpect(status().isOk())
+				//.andExpect(content().string(containsString("HTML")))
+				.andReturn();
+				String response = mvcResult.getResponse().getContentAsString();
+				assertEquals(response.contains("HTML"), true);
+	}
+	@Test
+	public void testUpdateQuestionByQuestion() throws Exception{
+		ForumDto question=new ForumDto();
+		question.setQuestion(null);
+		HttpHeaders httpHeaders=new HttpHeaders();
+		httpHeaders.set("Authorization", "A1B2C3");
+		question.setQuestionId(3);
+		when(this.forumservice.updateQuestion (question.getQuestionId(), question, "A1B2C3")).thenReturn(question);
+		MvcResult mvcResult = this.mockmvc.perform(put("http://localhost:8001/devforum/question/3")
+				.contentType("application/json")
+				.content(objectMapper.writeValueAsString(question))
+				.headers(httpHeaders)
+				).andExpect(status().isBadRequest())
+				.andReturn();
+		        
+	}
 }
+

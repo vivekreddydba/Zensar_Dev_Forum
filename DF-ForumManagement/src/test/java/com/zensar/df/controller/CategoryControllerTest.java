@@ -2,7 +2,6 @@ package com.zensar.df.controller;
 
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.junit.Assert.assertEquals;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.longThat;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -25,6 +24,7 @@ import org.springframework.test.web.servlet.MvcResult;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.zensar.df.dto.CategoryDto;
+import com.zensar.df.dto.ForumDto;
 import com.zensar.df.service.CategoryService;
 
 @WebMvcTest(CategoryController.class)
@@ -132,12 +132,13 @@ public class CategoryControllerTest {
 				assertEquals(response.contains(""), true);
 	}
 	@Test
-	public void testUpdateCategorySuccess() throws Exception{
+	public void testUpdateCategory() throws Exception{
 		CategoryDto category=new CategoryDto();
 		category.setName("HTML");
         HttpHeaders httpHeaders=new HttpHeaders();
 		httpHeaders.set("Authorization", "A1B2C3");
-		when(this.categoryService.updateCategory(3, category, "A1B2C3")).thenReturn(category);
+		category.setId(3);
+		when(this.categoryService.updateCategory(category.getId(), category, "A1B2C3")).thenReturn(category);
 		MvcResult mvcResult = this.mockMvc.perform(put("http://localhost:8001/devforum/category/3")
 				.contentType("application/json")
 				.content(objectMapper.writeValueAsString(category))
@@ -145,17 +146,17 @@ public class CategoryControllerTest {
 				).andExpect(status().isOk())
 				.andExpect(content().string(containsString("HTML")))
 				.andReturn();
-		String response = mvcResult.getResponse().getContentAsString();
-		assertEquals(response.contains("HTML"), true);
+				String response = mvcResult.getResponse().getContentAsString();
+				assertEquals(response.contains("HTML"), true);
 	}
 	@Test
-	public void testUpdateCategoryWithBlankName() throws Exception{
+	public void testUpdateCategoryByName() throws Exception{
 		CategoryDto category=new CategoryDto();
 		category.setName("");
 		HttpHeaders httpHeaders=new HttpHeaders();
 		httpHeaders.set("Authorization", "A1B2C3");
 		category.setId(3);
-		when(this.categoryService.updateCategory(3, category, "A1B2C3")).thenReturn(category);
+		when(this.categoryService.updateCategory(category.getId(), category, "A1B2C3")).thenReturn(category);
 		MvcResult mvcResult = this.mockMvc.perform(put("http://localhost:8001/devforum/category/3")
 				.contentType("application/json")
 				.content(objectMapper.writeValueAsString(category))
@@ -163,4 +164,5 @@ public class CategoryControllerTest {
 				).andExpect(status().isBadRequest())
 				.andReturn();
 	}
-}
+	
+      }   
