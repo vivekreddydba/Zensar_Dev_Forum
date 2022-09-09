@@ -4,6 +4,11 @@ import java.time.LocalDate;
 //import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+import org.apache.catalina.mapper.Mapper;
+import org.apache.catalina.mapper.Mapper;
+import org.modelmapper.ModelMapper;
 
 import org.springframework.beans.factory.annotation.Autowired;
 //import org.springframework.http.HttpStatus;
@@ -34,11 +39,17 @@ public class UserServiceImpl implements UserService, UserDetailsService{
 	JwtUtils jwtUtils;
 	
 
+
+	@Autowired
+	ModelMapper mapper;
+
+	
+
 	@Override
 	public UserDto registerUser(UserDto userdto) {
 		UserEntity userEntity=new UserEntity(userdto.getFirstname(), userdto.getLastname(), userdto.getUsername(), userdto.getPassword(), userdto.getEmail(), userdto.getPhone(), userdto.getRole());
 		userEntity=userRepo.save(userEntity);
-		userdto=new UserDto(userEntity.getId(), userEntity.getFirst_name(), userEntity.getLast_name(), userEntity.getUsername(), userEntity.getPassword(), userEntity.getEmail(), userEntity.getPhone(), userEntity.getRoles());
+		userdto=new UserDto(userEntity.getId(), userEntity.getFirstname(), userEntity.getLastname(), userEntity.getUsername(), userEntity.getPassword(), userEntity.getEmail(), userEntity.getPhone(), userEntity.getRole());
 		return userdto;
 	}
 	static List<UserDto> users = new ArrayList<>();
@@ -65,10 +76,19 @@ public class UserServiceImpl implements UserService, UserDetailsService{
 		}
 		UserEntity userEntity = userEntityList.get(0);
 		List<GrantedAuthority> authorities = new ArrayList<>();
-		authorities.add(new SimpleGrantedAuthority(userEntity.getRoles()));
+		authorities.add(new SimpleGrantedAuthority(userEntity.getRole()));
 		User user = new User(userEntity.getUsername(), userEntity.getPassword(),authorities);
 		return user;
 		
 	}
+	
+	@Override
+	public List<UserDto> findUserByUsername(String username) throws UsernameNotFoundException {
+		// Write user Entity and UserRepo
+		List<UserEntity>userEntityList = userRepo.findByUsername(username);
+		return userEntityList.stream().map(i -> mapper.map(i, UserDto.class)).collect(Collectors.toList());
+		
+	}
+
 
 }

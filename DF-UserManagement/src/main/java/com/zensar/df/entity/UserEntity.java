@@ -17,9 +17,9 @@ public class UserEntity {
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private int id;
 	@Column(name="first_name")
-	private String first_name;
+	private String firstname;
 	@Column(name="last_name")
-	private String last_name;
+	private String lastname;
 	@Column(name="user_name")
 	private String username;
 	@Column(name="password")
@@ -28,63 +28,63 @@ public class UserEntity {
 	private String email;
 	@Column(name="phone")
 	private long phone;
-	@Column(name="roles")
-	private String roles;
+	@Column(name="role")
+	private String role;
 	
 	public UserEntity() {}
 	public UserEntity(String first_name, String last_name, String username, String password, String email,
-			long phone, String roles) {
+			long phone, String role) {
 		super();
-		this.first_name = first_name;
-		this.last_name = last_name;
+		this.firstname = first_name;
+		this.lastname = last_name;
 		this.username = username;
 		this.password = password;
 		this.email = email;
 		this.phone = phone;
-		this.roles=roles;
+		this.role=role;
 	}
 
 	
 	public UserEntity(int id, String first_name, String last_name, String username, String password, String email,
-			long phone, String roles) {
+			long phone, String role) {
 		super();
 		this.id = id;
-		this.first_name = first_name;
-		this.last_name = last_name;
+		this.firstname = first_name;
+		this.lastname = last_name;
 		this.username = username;
 		this.password = password;
 		this.email = email;
 		this.phone = phone;
-		this.roles=roles;
+		this.role=role;
 	}
 	public int getId() {
 		return id;
 	}
-	public String getRoles() {
-		return roles;
+	public String getRole() {
+		return role;
 	}
-	public void setRoles(String roles) {
-		this.roles = roles;
+	public void setRole(String role) {
+		this.role = role;
 	}
 	public void setId(int id) {
 		this.id = id;
 	}
-	public String getFirst_name() {
-		return first_name;
+	public String getFirstname() {
+		return firstname;
 	}
-	public void setFirst_name(String first_name) {
-		this.first_name = first_name;
+	public void setFirstname(String firstname) {
+		this.firstname = firstname;
 	}
-	public String getLast_name() {
-		return last_name;
+	public String getLastname() {
+		return lastname;
 	}
-	public void setLast_name(String last_name) {
-		this.last_name = last_name;
+	public void setLastname(String lastname) {
+		this.lastname = lastname;
 	}
 	public String getUsername() {
 		return username;
 	}
-	public void setUser_name(String username) {
+	public void setUsername(String username) {
 		this.username = username;
 	}
 	public String getPassword() {
@@ -107,8 +107,8 @@ public class UserEntity {
 	}
 	@Override
 	public String toString() {
-		return "UserEntity [id=" + id + ", first_name=" + first_name + ", last_name=" + last_name + ", user_name="
-				+ username + ", password=" + password + ", email=" + email + ", phone=" + phone + ", roles=" + roles
+		return "UserEntity [id=" + id + ", first_name=" + firstname + ", last_name=" + lastname + ", user_name="
+				+ username + ", password=" + password + ", email=" + email + ", phone=" + phone + ", role=" + role
 				+ "]";
 	}
 }

@@ -102,5 +102,15 @@ public class UserController {
 		return new ResponseEntity<Boolean>(false,HttpStatus.BAD_REQUEST);
     }
 	
-
+	//returns user information
+		@GetMapping(value="/user", produces={MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
+		public ResponseEntity<UserDto> returnUsersInfo (@RequestHeader("Authorization")String jwtToken){
+			String username = jwtUtils.extractUsername(jwtToken);
+			UserDto user;
+			user = userService.findUserByUsername(username).get(0);
+			if(user.getFirstname()==null) {
+				return new ResponseEntity<UserDto>(user,HttpStatus.BAD_REQUEST);
+			}
+			return new ResponseEntity<UserDto>(user,HttpStatus.ACCEPTED);
+			}
 }

@@ -1,13 +1,18 @@
 package com.zensar.df.controller;
 
 import static org.hamcrest.CoreMatchers.containsString;
-import static org.junit.Assert.assertEquals;
+//import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import org.junit.jupiter.api.Test;
 //import org.junit.Test;
@@ -113,7 +118,42 @@ public class UserControllerTest {
 		String response = mvcResult.getResponse().getContentAsString();
 		assertEquals(response.equals("true"),true);
 	}
-	
-	
+    
+@Test
+public void test2getUserInfo() throws Exception {
+    HttpHeaders httpHeaders = new HttpHeaders();
+    httpHeaders.set("Authorization", "A54BG"); 
+    List<UserDto> user =new ArrayList<>();
+    user.add(new UserDto(1,null, " lastname"," String username", "String password", "String email", 12344555, "String role"));
+    when(this.jwtUtils.extractUsername("A54")).thenReturn(null);
+    when(this.userService.findUserByUsername(any())).thenReturn(user);
+    when(this.jwtUtils.validateToken(any(),any())).thenReturn(false); 
+    MvcResult mvcResult = this.mockMvc.perform(get("http://localhost:8000/devforum/user")
+            .headers(httpHeaders))
+            .andExpect(status().isBadRequest())
+            .andReturn();
+           
+    String response = mvcResult.getResponse().getContentAsString();
+    assertEquals(response.contains("null"), true);
+    }
+	 @Test
+     public void testgetUserInfo() throws Exception {
+         HttpHeaders httpHeaders = new HttpHeaders();
+         httpHeaders.set("Authorization", "A54BG");
+         List<UserDto> user =new ArrayList<>();
+         user.add(new UserDto(1,"firstname", " lastname"," String username", "String password", "String email", 12344555, "String role"));
+         when(this.jwtUtils.extractUsername("A54BG")).thenReturn("string");
+         when(this.userService.findUserByUsername(any())).thenReturn(user);
+         when(this.jwtUtils.validateToken(any(),any())).thenReturn(true);
+         
+         MvcResult mvcResult = this.mockMvc.perform(get("http://localhost:8000/devforum/user")
+                 .headers(httpHeaders))
+                 .andExpect(status().isAccepted())
+                 .andReturn();
+         String response = mvcResult.getResponse().getContentAsString();
+         assertEquals(response.contains("lastname"), true);
+	 }
+                 
+ 
 	
 }
