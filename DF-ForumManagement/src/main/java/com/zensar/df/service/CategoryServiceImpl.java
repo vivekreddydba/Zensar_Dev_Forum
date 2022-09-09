@@ -15,6 +15,7 @@ import com.zensar.df.dto.CategoryDto;
 import com.zensar.df.entity.CategoryEntity;
 import com.zensar.df.exception.InvalidAuthorizationTokenException;
 import com.zensar.df.exception.InvalidCategoryIdException;
+import com.zensar.df.exception.InvalidRoleException;
 import com.zensar.df.repo.CategoryRepo;
 @Service
 public class CategoryServiceImpl implements CategoryService {
@@ -72,16 +73,22 @@ public class CategoryServiceImpl implements CategoryService {
 				
 	}
 	
+
 	@Override
-	public CategoryDto updateCategory(long categoryId, CategoryDto category, String auth) {
+	public CategoryDto updateCategory(long categoryId, CategoryDto category, String auth){
 		
 		if(!userServiceDelegate.isLoggedInUser(auth)) {
 			
 			throw new InvalidAuthorizationTokenException(auth);
 		}
 		
-		CategoryEntity categoryEntity = categoryRepo.getById(categoryId);
+		if(!("ROLE_ADMIN".equals(userServiceDelegate.isAdminRole(auth)))) {
+			
+			throw new InvalidRoleException("");
+		}
 	
+		
+		CategoryEntity categoryEntity = categoryRepo.getById(categoryId);
 		if(categoryRepo.existsById(categoryId)){
 
 			categoryEntity.setName(category.getName());
@@ -90,7 +97,6 @@ public class CategoryServiceImpl implements CategoryService {
 
             return new CategoryDto(updatedCategory.getId(), updatedCategory.getName());
         }
-        
 		throw new InvalidCategoryIdException(""+categoryId);
 	}
 }

@@ -24,6 +24,7 @@ import org.springframework.stereotype.Service;
 import com.zensar.df.dto.UserDto;
 import com.zensar.df.entity.BlackListEntity;
 import com.zensar.df.entity.UserEntity;
+import com.zensar.df.exception.InvalidUserNameException;
 import com.zensar.df.repo.BlacklistRepo;
 import com.zensar.df.repo.UserRepo;
 import com.zensar.df.utils.JwtUtils;
@@ -43,15 +44,6 @@ public class UserServiceImpl implements UserService, UserDetailsService{
 	@Autowired
 	ModelMapper mapper;
 
-	
-
-	@Override
-	public UserDto registerUser(UserDto userdto) {
-		UserEntity userEntity=new UserEntity(userdto.getFirstname(), userdto.getLastname(), userdto.getUsername(), userdto.getPassword(), userdto.getEmail(), userdto.getPhone(), userdto.getRole());
-		userEntity=userRepo.save(userEntity);
-		userdto=new UserDto(userEntity.getId(), userEntity.getFirstname(), userEntity.getLastname(), userEntity.getUsername(), userEntity.getPassword(), userEntity.getEmail(), userEntity.getPhone(), userEntity.getRole());
-		return userdto;
-	}
 	static List<UserDto> users = new ArrayList<>();
 	static int lastUserId = 0;
 	
@@ -64,6 +56,36 @@ public class UserServiceImpl implements UserService, UserDetailsService{
     	be=Blrepo.save(be);
     	return true;
     }
+	@Override
+	public UserDto registerUser(UserDto userdto) {
+		UserEntity userEntity=new UserEntity(userdto.getFirstname(), userdto.getLastname(), userdto.getUsername(), userdto.getPassword(), userdto.getEmail(), userdto.getPhone(), userdto.getRole());
+		List<UserEntity>userEntityList =userRepo.findByUsername(userdto.getUsername());
+		if(userEntityList==null || userEntityList.size()==0) {
+			userEntity=userRepo.save(userEntity);
+			userdto=new UserDto(userEntity.getId(), userEntity.getFirstname(), userEntity.getLastname(), userEntity.getUsername(), userEntity.getPassword(), userEntity.getEmail(), userEntity.getPhone(), userEntity.getRole());
+			return userdto;
+		}
+		throw new InvalidUserNameException(userdto.getUsername());
+
+	}
+	
+	@Override
+	public String getRole(String username) throws UsernameNotFoundException {
+		// TODO Auto-generated method stub
+	List<UserEntity> userEntityList =userRepo.findByUsername(username);
+	if(userEntityList==null || userEntityList.size()==0) {
+		throw new UsernameNotFoundException(username);
+	}
+	
+	UserEntity userEntity = userEntityList.get(0);
+	/*
+	List<GrantedAuthority> authorities = new ArrayList<>();
+	authorities.add(new SimpleGrantedAuthority(userEntity.getRoles()));
+	User user = new User(userEntity.getUsername(), userEntity.getPassword(),authorities);
+	*/
+	return userEntity.getRole();
+	
+	}
 	
 	
 	@Override

@@ -28,6 +28,13 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 				new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
 		
 	}
+	@ExceptionHandler(value = InvalidUserNameException.class)
+	public ResponseEntity<Object> handleUsernameError(RuntimeException exception, WebRequest request){
+		String bodyOfResponse = exception.toString();
+		return handleExceptionInternal(exception, bodyOfResponse,
+				new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
+		
+	}
 	
 
 }

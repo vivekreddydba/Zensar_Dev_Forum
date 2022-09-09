@@ -24,7 +24,7 @@ public class DfForumManagementApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(DfForumManagementApplication.class, args);
 	}
-	
+
 	@Bean
 	public ModelMapper getModelMapper() {
 		return new ModelMapper();
@@ -54,8 +54,4 @@ public class DfForumManagementApplication {
 	public RestTemplate getRestTemplate() {
 		return new RestTemplate();
 	}
-
-
-
 }
-

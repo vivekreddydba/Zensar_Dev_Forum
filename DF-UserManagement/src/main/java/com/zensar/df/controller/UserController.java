@@ -80,17 +80,17 @@ public class UserController {
 	static List<UserDto> users = new ArrayList<>();
 	static int lastUserId = 0;
 	
+	
 	@PostMapping(value = "/user", consumes= {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE},produces= {MediaType.APPLICATION_JSON_VALUE,MediaType.APPLICATION_XML_VALUE})
 	@ApiOperation(value="Registration of a user", notes="This request saves the details of user in the database")
 	public ResponseEntity<UserDto> registerUser(@RequestBody UserDto userdto) {
 		UserDto user=userService.registerUser(userdto);
-		if(user.getFirstname()=="" || user.getUsername()=="" || user.getPassword()=="" || user.getRole()=="") {
-			return new ResponseEntity<UserDto>(user, HttpStatus.BAD_REQUEST);
+		if("".equals(user.getFirstname()) || "".equals(user.getUsername()) || "".equals(user.getPassword()) || "".equals(user.getRole())) {
+			return new ResponseEntity<UserDto>(HttpStatus.BAD_REQUEST);
 		}
 		return new ResponseEntity<UserDto>(user,HttpStatus.OK);
 		
 	}
-	
 	@DeleteMapping(value="/user/logout")
 	@ApiOperation(value="Logout of a user", notes="This request moves the jwt token into blacklist and logs out the user")
 	public ResponseEntity<Boolean> logoutUser(@RequestHeader("Authorization") String jwtToken) {
@@ -101,6 +101,25 @@ public class UserController {
 		}
 		return new ResponseEntity<Boolean>(false,HttpStatus.BAD_REQUEST);
     }
+	
+	@GetMapping(value="/user/role", produces={MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
+	public ResponseEntity<String> getRole(@RequestHeader("Authorization") String jwtToken) {
+		jwtToken = jwtToken.substring(7, jwtToken.length());
+		boolean isTokenValid = false;
+		String username = null;
+		try {
+			username = jwtUtils.extractUsername(jwtToken);
+			UserDetails userDetails = userService.loadUserByUsername(username);
+			isTokenValid = jwtUtils.validateToken(jwtToken, userDetails);
+		}
+		catch(Exception e) {
+			return new ResponseEntity<String>("", HttpStatus.BAD_REQUEST);
+		}
+		if(isTokenValid) {
+			return new ResponseEntity<String>(userService.getRole(username), HttpStatus.OK);
+		}
+		return new ResponseEntity<String>("", HttpStatus.BAD_REQUEST);
+	}
 	
 	//returns user information
 		@GetMapping(value="/user", produces={MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
