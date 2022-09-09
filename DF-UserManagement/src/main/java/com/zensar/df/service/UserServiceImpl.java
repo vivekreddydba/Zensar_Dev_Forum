@@ -1,13 +1,13 @@
 package com.zensar.df.service;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+//import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+//import org.springframework.http.HttpStatus;
+//import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -49,7 +49,7 @@ public class UserServiceImpl implements UserService, UserDetailsService{
 	
 	@Override
     public Boolean logoutUser(String auth) {
-    	BlackListEntity be=new BlackListEntity(auth, LocalDateTime.now());
+    	BlackListEntity be=new BlackListEntity(auth, LocalDate.now());
     	be=Blrepo.save(be);
     	return true;
     }
