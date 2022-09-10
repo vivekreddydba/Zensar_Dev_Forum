@@ -27,13 +27,13 @@ public class UserEntity {
 	@Column(name="email")
 	private String email;
 	@Column(name="phone")
-	private long phone;
+	private String phone;
 	@Column(name="role")
 	private String role;
 	
 	public UserEntity() {}
 	public UserEntity(String first_name, String last_name, String username, String password, String email,
-			long phone, String role) {
+			String phone, String role) {
 		super();
 		this.firstname = first_name;
 		this.lastname = last_name;
@@ -46,7 +46,7 @@ public class UserEntity {
 
 	
 	public UserEntity(int id, String first_name, String last_name, String username, String password, String email,
-			long phone, String role) {
+			String phone, String role) {
 		super();
 		this.id = id;
 		this.firstname = first_name;
@@ -99,10 +99,10 @@ public class UserEntity {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	public long getPhone() {
+	public String getPhone() {
 		return phone;
 	}
-	public void setPhone(long phone) {
+	public void setPhone(String phone) {
 		this.phone = phone;
 	}
 	@Override

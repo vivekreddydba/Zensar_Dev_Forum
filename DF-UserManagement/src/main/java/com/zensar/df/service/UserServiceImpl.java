@@ -1,18 +1,12 @@
 package com.zensar.df.service;
 
 import java.time.LocalDate;
-//import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
-import org.apache.catalina.mapper.Mapper;
-import org.apache.catalina.mapper.Mapper;
 import org.modelmapper.ModelMapper;
 
 import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.http.HttpStatus;
-//import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -59,11 +53,11 @@ public class UserServiceImpl implements UserService, UserDetailsService{
 	@Override
 	public UserDto registerUser(UserDto userdto) {
 		UserEntity userEntity=new UserEntity(userdto.getFirstname(), userdto.getLastname(), userdto.getUsername(), userdto.getPassword(), userdto.getEmail(), userdto.getPhone(), userdto.getRole());
-		List<UserEntity>userEntityList =userRepo.findByUsername(userdto.getUsername());
+		List<UserEntity> userEntityList =userRepo.findByUsername(userdto.getUsername());
 		if(userEntityList==null || userEntityList.size()==0) {
-			userEntity=userRepo.save(userEntity);
-			userdto=new UserDto(userEntity.getId(), userEntity.getFirstname(), userEntity.getLastname(), userEntity.getUsername(), userEntity.getPassword(), userEntity.getEmail(), userEntity.getPhone(), userEntity.getRole());
-			return userdto;
+			  userEntity=userRepo.save(userEntity);
+			  userdto=new UserDto(userEntity.getId(), userEntity.getFirstname(), userEntity.getLastname(), userEntity.getUsername(), userEntity.getPassword(), userEntity.getEmail(), userEntity.getPhone(), userEntity.getRole());
+			  return userdto;
 		}
 		throw new InvalidUserNameException(userdto.getUsername());
 
@@ -71,18 +65,12 @@ public class UserServiceImpl implements UserService, UserDetailsService{
 	
 	@Override
 	public String getRole(String username) throws UsernameNotFoundException {
-		// TODO Auto-generated method stub
 	List<UserEntity> userEntityList =userRepo.findByUsername(username);
 	if(userEntityList==null || userEntityList.size()==0) {
 		throw new UsernameNotFoundException(username);
 	}
 	
 	UserEntity userEntity = userEntityList.get(0);
-	/*
-	List<GrantedAuthority> authorities = new ArrayList<>();
-	authorities.add(new SimpleGrantedAuthority(userEntity.getRoles()));
-	User user = new User(userEntity.getUsername(), userEntity.getPassword(),authorities);
-	*/
 	return userEntity.getRole();
 	
 	}
@@ -90,8 +78,6 @@ public class UserServiceImpl implements UserService, UserDetailsService{
 	
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		// TODO Auto-generated method stub
-		// Write user Entity and UserRepo
 		List<UserEntity>userEntityList =userRepo.findByUsername(username);
 		if(userEntityList==null || userEntityList.size()==0) {
 			throw new UsernameNotFoundException(username);

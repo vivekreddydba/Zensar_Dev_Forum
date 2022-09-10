@@ -3,6 +3,8 @@ package com.zensar.df.controller;
 import java.io.IOException;
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -31,11 +33,8 @@ public class CategoryController {
 	private CategoryService categoryService;
 	@PostMapping(value="/category", consumes={MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE}, produces={MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
 	@ApiOperation(value="New question category", notes="This request creates new question category")
-	public ResponseEntity<CategoryDto> createNewCategory(@RequestBody CategoryDto categoryDto, @RequestHeader(value="Authorization", required=false) String authToken) throws IOException {
+	public ResponseEntity<CategoryDto> createNewCategory(@Valid @RequestBody CategoryDto categoryDto, @RequestHeader(value="Authorization", required=false) String authToken) throws IOException {
 		CategoryDto categoryDTO = this.categoryService.createNewCategory(categoryDto,authToken);
-		if(categoryDto.getName()==null) {
-			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-		}
 		return new ResponseEntity<CategoryDto>(categoryDTO, HttpStatus.CREATED);
 	} 
 	
@@ -58,7 +57,7 @@ public class CategoryController {
 	
 	@PutMapping(value="/category/{id}", consumes={MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE}, produces={MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
 	@ApiOperation(value="Updates category by ID", notes="This request updates specified category with name passed and present in database")
-	public ResponseEntity<CategoryDto> updateCategory(@RequestHeader("Authorization") String authToken, @PathVariable("id") Long id, @RequestBody CategoryDto category){
+	public ResponseEntity<CategoryDto> updateCategory(@Valid @RequestHeader("Authorization") String authToken, @PathVariable("id") Long id, @RequestBody CategoryDto category){
 		if(!"".equals(category.getName())) {
 		   return new ResponseEntity<CategoryDto>(categoryService.updateCategory(id, category, authToken), HttpStatus.OK);
 		}

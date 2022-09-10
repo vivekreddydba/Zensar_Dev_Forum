@@ -1,30 +1,47 @@
 package com.zensar.df.dto;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
+
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 @ApiModel(value="User model has information about user")
 public class UserDto {
 	@ApiModelProperty(value="User ID")
 	private int id;
+	@NotEmpty
+	@Size(min =4, message = "user name should have at least 2 characters")
 	@ApiModelProperty(value="Firstname of the user")
 	private String firstname;
+	@NotEmpty
+	@Size(min =4, message = "user name should have at least 2 characters")
 	@ApiModelProperty(value="Lastname of the user")
 	private String lastname;
+	@NotEmpty
+	@Size(min =4, message = "user name should have at least 2 characters")
 	@ApiModelProperty(value="usrname of the user for login")
 	private String username;
 	@ApiModelProperty(value="Password of the user for login")
+	@NotEmpty
+	@Size(min = 8, message = "password should have at least 8 characters")
 	private String password;
 	@ApiModelProperty(value="Email address of the user")
+	@NotEmpty
+	@Email
 	private String email;
 	@ApiModelProperty(value="Phone Number of the user")
-	private long phone;
+	@NotEmpty
+	@Size(min =10, max=10, message = "Phone number should have at least 10 characters")
+	private String phone;
+	@NotEmpty
 	@ApiModelProperty(value="Role")
 	private String role;
 	
 	public UserDto() {
 		super();
 	}
-	public UserDto(int id, String firstname, String lastname, String username, String password, String email, long phone, String role) {
+	public UserDto(int id, String firstname, String lastname, String username, String password, String email, String phone, String role) {
 		super();
 		this.id = id;
 		this.firstname = firstname;
@@ -73,10 +90,10 @@ public class UserDto {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	public long getPhone() {
+	public String getPhone() {
 		return phone;
 	}
-	public void setPhone(long phone) {
+	public void setPhone(String phone) {
 		this.phone = phone;
 	}
 

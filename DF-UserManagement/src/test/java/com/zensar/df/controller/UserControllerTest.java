@@ -58,7 +58,7 @@ public class UserControllerTest {
 		user.setUsername("anand");
 		user.setPassword("anand123");
 		user.setEmail("anand@gmail.com");
-		user.setPhone(9999999999L);
+		user.setPhone("9999999999L");
 		when(this.userService.registerUser(user)).thenReturn(user);
 		MvcResult mvcResult = this.mockMvc.perform(post("http://localhost:8000/devforum/user/")
 				.contentType("application/json")
@@ -78,7 +78,7 @@ public class UserControllerTest {
 		user.setUsername("anand");
 		user.setPassword("anand123");
 		user.setEmail("anand@gmail.com");
-		user.setPhone(9999999999L);
+		user.setPhone("9999999999L");
 		when(this.userService.registerUser(user)).thenReturn(user);
 		MvcResult mvcResult = this.mockMvc.perform(post("http://localhost:8000/devforum/user/")
 				.contentType("application/json")
@@ -124,7 +124,7 @@ public void test2getUserInfo() throws Exception {
     HttpHeaders httpHeaders = new HttpHeaders();
     httpHeaders.set("Authorization", "A54BG"); 
     List<UserDto> user =new ArrayList<>();
-    user.add(new UserDto(1,null, " lastname"," String username", "String password", "String email", 12344555, "String role"));
+    user.add(new UserDto(1,null, " lastname"," String username", "String password", "String email", "1234455588", "String role"));
     when(this.jwtUtils.extractUsername("A54")).thenReturn(null);
     when(this.userService.findUserByUsername(any())).thenReturn(user);
     when(this.jwtUtils.validateToken(any(),any())).thenReturn(false); 
@@ -141,7 +141,7 @@ public void test2getUserInfo() throws Exception {
          HttpHeaders httpHeaders = new HttpHeaders();
          httpHeaders.set("Authorization", "A54BG");
          List<UserDto> user =new ArrayList<>();
-         user.add(new UserDto(1,"firstname", " lastname"," String username", "String password", "String email", 12344555, "String role"));
+         user.add(new UserDto(1,"firstname", " lastname"," String username", "String password", "String email", "1234455577", "String role"));
          when(this.jwtUtils.extractUsername("A54BG")).thenReturn("string");
          when(this.userService.findUserByUsername(any())).thenReturn(user);
          when(this.jwtUtils.validateToken(any(),any())).thenReturn(true);

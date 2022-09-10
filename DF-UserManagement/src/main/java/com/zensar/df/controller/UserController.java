@@ -3,6 +3,8 @@ package com.zensar.df.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -83,11 +85,8 @@ public class UserController {
 	
 	@PostMapping(value = "/user", consumes= {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE},produces= {MediaType.APPLICATION_JSON_VALUE,MediaType.APPLICATION_XML_VALUE})
 	@ApiOperation(value="Registration of a user", notes="This request saves the details of user in the database")
-	public ResponseEntity<UserDto> registerUser(@RequestBody UserDto userdto) {
+	public ResponseEntity<UserDto> registerUser(@Valid @RequestBody UserDto userdto) {
 		UserDto user=userService.registerUser(userdto);
-		if("".equals(user.getFirstname()) || "".equals(user.getUsername()) || "".equals(user.getPassword()) || "".equals(user.getRole())) {
-			return new ResponseEntity<UserDto>(HttpStatus.BAD_REQUEST);
-		}
 		return new ResponseEntity<UserDto>(user,HttpStatus.OK);
 		
 	}

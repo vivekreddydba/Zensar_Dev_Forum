@@ -2,6 +2,9 @@ package com.zensar.df.dto;
 
 import java.util.Objects;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
+
 import org.springframework.stereotype.Component;
 
 import io.swagger.annotations.ApiModel;
@@ -38,6 +41,7 @@ public class CategoryDto {
 	@ApiModelProperty(value="Category ID")
 	private long id;
 	@ApiModelProperty(value="Category Name")
+	@NotEmpty
 	private String name;
 	@Override
 	public int hashCode() {
