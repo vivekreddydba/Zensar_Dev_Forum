@@ -153,6 +153,7 @@ public void test2getUserInfo() throws Exception {
          String response = mvcResult.getResponse().getContentAsString();
          assertEquals(response.contains("lastname"), true);
 	 }
+	 
                  
  
 	

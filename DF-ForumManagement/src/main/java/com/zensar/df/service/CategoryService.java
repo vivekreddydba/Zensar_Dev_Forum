@@ -12,6 +12,6 @@ public interface CategoryService {
 	 List<CategoryDto> GetAllCategories();
 	 public List<CategoryDto> getAllCategoriesById(Long id);
 	 CategoryDto updateCategory(long id, CategoryDto category, String auth);
-	 public ResponseEntity<Boolean> DeleteCategoryById(Long id,String auth);
+	 public boolean DeleteCategoryById(Long id,String auth);
 
 }

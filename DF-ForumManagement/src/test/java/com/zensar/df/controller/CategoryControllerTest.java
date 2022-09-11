@@ -4,6 +4,7 @@ import static org.hamcrest.CoreMatchers.containsString;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.longThat;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
@@ -164,5 +165,34 @@ public class CategoryControllerTest {
 				).andExpect(status().isBadRequest())
 				.andReturn();
 	}
+	@Test
+    public void DeletebyCategoryIdTest() throws Exception{
+        CategoryDto category=new CategoryDto();
+        HttpHeaders httpHeaders=new HttpHeaders();
+        httpHeaders.set("Authorization", "A1B2C3");
+        category.setId(2);
+        when(this.categoryService.DeleteCategoryById(category.getId(),"A1B2C3")).thenReturn(true);
+        MvcResult mvcResult = this.mockMvc.perform(delete("http://localhost:8001/devforum/category/2")
+                        .headers(httpHeaders))
+                        .andExpect(status().isOk())
+                        .andReturn();
+        String response=mvcResult.getResponse().getContentAsString();
+        assertEquals("true".equals(response), true);
+    }
+    
+    @Test
+    public void DeletebyInvalidCategoryIdTest() throws Exception{
+        CategoryDto category=new CategoryDto();
+        HttpHeaders httpHeaders=new HttpHeaders();
+        httpHeaders.set("Authorization", "A1B2C3");
+        category.setId(2);
+        when(this.categoryService.DeleteCategoryById(category.getId(),"A1B")).thenReturn(true);
+        MvcResult mvcResult = this.mockMvc.perform(delete("http://localhost:8001/devforum/category/2")
+                        .headers(httpHeaders))
+                        .andExpect(status().isBadRequest())
+                        .andReturn();
+        String response=mvcResult.getResponse().getContentAsString();
+        assertEquals("false".equals(response), true);
+    }
 	
-      }   
+}   

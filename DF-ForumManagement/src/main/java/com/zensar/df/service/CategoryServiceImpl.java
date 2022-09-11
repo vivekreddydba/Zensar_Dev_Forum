@@ -61,17 +61,34 @@ public class CategoryServiceImpl implements CategoryService {
 		
 	}
 	@Override
-	public ResponseEntity<Boolean> DeleteCategoryById(Long id, String  auth){
-		if(categoryRepo.existsById(id)) {
-			CategoryEntity temp=categoryRepo.getById(id);
-			categoryRepo.delete(temp);
-			return new ResponseEntity<Boolean>(true, HttpStatus.OK);
-		}
-		
-		return new ResponseEntity<Boolean>(false, HttpStatus.BAD_REQUEST);
-		
-				
-	}
+    public boolean DeleteCategoryById(Long id, String  auth){
+        
+        if (!userServiceDelegate.isLoggedInUser(auth)) {
+
+
+
+           throw new InvalidAuthorizationTokenException(auth);
+        }
+        
+        if (!("ROLE_ADMIN".equals(userServiceDelegate.isAdminRole(auth)))) {
+
+
+
+           throw new InvalidRoleException(""+"User Not Allowed");
+        }
+
+
+
+       if(categoryRepo.existsById(id)) {
+            CategoryEntity temp=categoryRepo.getById(id);
+            categoryRepo.delete(temp);
+            return true;
+        }
+        
+        return false;
+        
+                
+    }
 	
 
 	@Override
