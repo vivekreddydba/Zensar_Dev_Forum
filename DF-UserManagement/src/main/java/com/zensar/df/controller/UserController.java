@@ -122,6 +122,7 @@ public class UserController {
 	
 	//returns user information
 		@GetMapping(value="/user", produces={MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
+		@ApiOperation(value="Returns user information", notes="This API endpoint is used for returning valid User Infor")
 		public ResponseEntity<UserDto> returnUsersInfo (@RequestHeader("Authorization")String jwtToken){
 			jwtToken = jwtToken.substring(7, jwtToken.length());
 			boolean isTokenValid = false;
