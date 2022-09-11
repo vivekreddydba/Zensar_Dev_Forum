@@ -123,12 +123,25 @@ public class UserController {
 	//returns user information
 		@GetMapping(value="/user", produces={MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
 		public ResponseEntity<UserDto> returnUsersInfo (@RequestHeader("Authorization")String jwtToken){
-			String username = jwtUtils.extractUsername(jwtToken);
+			jwtToken = jwtToken.substring(7, jwtToken.length());
+			boolean isTokenValid = false;
 			UserDto user;
-			user = userService.findUserByUsername(username).get(0);
-			if(user.getFirstname()==null) {
-				return new ResponseEntity<UserDto>(user,HttpStatus.BAD_REQUEST);
+			String username=null;
+			try {
+				username = jwtUtils.extractUsername(jwtToken);
+				UserDetails userDetails = userService.loadUserByUsername(username);
+				isTokenValid = jwtUtils.validateToken(jwtToken, userDetails);
 			}
-			return new ResponseEntity<UserDto>(user,HttpStatus.ACCEPTED);
+			catch(Exception e) {
+				return new ResponseEntity<UserDto>(HttpStatus.BAD_REQUEST);
 			}
+			if(isTokenValid) {
+				user = userService.findUserByUsername(username).get(0);		
+				return new ResponseEntity<UserDto>(user,HttpStatus.ACCEPTED);
+			}
+			else {
+				return new ResponseEntity<UserDto>(HttpStatus.BAD_REQUEST);
+			}
+		}
+					
 }

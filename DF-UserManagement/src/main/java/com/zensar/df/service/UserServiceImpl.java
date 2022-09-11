@@ -5,6 +5,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.modelmapper.ModelMapper;
+import java.util.Optional;
+import org.apache.catalina.mapper.Mapper;
+import org.apache.catalina.mapper.Mapper;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -14,11 +18,16 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+
 
 import com.zensar.df.dto.UserDto;
 import com.zensar.df.entity.BlackListEntity;
 import com.zensar.df.entity.UserEntity;
 import com.zensar.df.exception.InvalidUserNameException;
+
+import org.springframework.web.bind.annotation.RequestHeader;
 import com.zensar.df.repo.BlacklistRepo;
 import com.zensar.df.repo.UserRepo;
 import com.zensar.df.utils.JwtUtils;
