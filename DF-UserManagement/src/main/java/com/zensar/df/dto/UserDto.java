@@ -52,6 +52,17 @@ public class UserDto {
 		this.phone = phone;
 		this.role=role;
 	}
+	public UserDto( String firstname, String lastname, String username, String password, String email, String phone, String role) {
+		super();
+		//this.id = id;
+		this.firstname = firstname;
+		this.lastname = lastname;
+		this.username = username;
+		this.password = password;
+		this.email = email;
+		this.phone = phone;
+		this.role=role;
+	}
 
 	
 	public int getId() {
