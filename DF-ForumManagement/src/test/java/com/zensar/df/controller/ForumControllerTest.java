@@ -4,11 +4,15 @@ import static org.hamcrest.CoreMatchers.containsString;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 //import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -149,5 +153,31 @@ public class ForumControllerTest {
 				).andExpect(status().isBadRequest())
 				.andReturn();
 }
+	
+	@Test
+	public void getAllQuestionsByCategoryIdTest() throws Exception {
+		List<ForumDto> forumDtoList = new ArrayList<ForumDto>();
+		forumDtoList.add(new ForumDto(1,"What is Spring Boot",true,"Spring is security",32));
+		when(this.forumservice.getAllQuestionsByCategoryId(32)).
+			thenReturn(forumDtoList);
+		
+		MvcResult mvcResult = this.mockmvc.perform(get("http://localhost:8001/devforum/question/search/category/32"))
+				.andExpect(status().isOk())
+				.andReturn();
+		String response = mvcResult.getResponse().getContentAsString();
+		assertEquals(response.contains("Spring"), true);
+	}
+	
+	@Test
+	public void getAllQuestionsByInvalidCategoryIdTest() throws Exception {
+		List<ForumDto> forumDtoList = new ArrayList<ForumDto>();
+		forumDtoList.add(new ForumDto(1,"What is Spring Boot",true,"Spring is security",-1));
+		when(this.forumservice.getAllQuestionsByCategoryId(-1)).
+			thenReturn(forumDtoList);
+		
+		MvcResult mvcResult = this.mockmvc.perform(get("http://localhost:8001/devforum/question/search/category/-1"))
+				.andExpect(status().isBadRequest())
+				.andReturn();
+	}
 }
 

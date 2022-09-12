@@ -1,6 +1,7 @@
 package com.zensar.df.service;
 
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -50,10 +51,20 @@ public class CategoryServiceImpl implements CategoryService {
 		return new CategoryDto(categoryDto.getId(),categoryDto.getName());
 	}
 	
-	@Override
-	public List<CategoryDto> GetAllCategories() {
-		List<CategoryEntity> categoryEntities = categoryRepo.findAll();
-		return categoryEntities.stream().map(i -> mapper.map(i, CategoryDto.class)).collect(Collectors.toList());
+//	@Override
+//	public List<CategoryDto> GetAllCategories() {
+//		List<CategoryEntity> categoryEntities = categoryRepo.findAll();
+//		return categoryEntities.stream().map(i -> mapper.map(i, CategoryDto.class)).collect(Collectors.toList());
+//	}
+	public List<CategoryDto> GetAllCategories(){
+		List<CategoryEntity> categoryEntityList = categoryRepo.findAll();
+		List<CategoryDto> categoryDtoList = new ArrayList<>();
+		for(CategoryEntity categoryEntity: categoryEntityList) {
+			CategoryDto category = 
+					new CategoryDto(categoryEntity.getId(),categoryEntity.getName());
+			categoryDtoList.add(category);
+		}
+		return categoryDtoList;
 	}
 	
 

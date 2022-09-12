@@ -1,5 +1,6 @@
 package com.zensar.df.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -102,14 +103,20 @@ public class ForumServiceImpl implements ForumService{
 		throw new InvalidQuestionIdException(""+questionId);
 	}
 	
-	@Override
-	public List<ForumDto> getAllQuestionsById(long categoryid) {
+	
+	public List<ForumDto> getAllQuestionsByCategoryId(long categoryid){
 		if(forumRepo.existsBycategory_id(categoryid)) {
-		List<ForumEntity> forumEntities = forumRepo.findBycategory_id(categoryid);
-
-			return forumEntities.stream().map(i -> mapper.map(i, ForumDto.class)).collect(Collectors.toList());
+		List<ForumEntity> forumEntityList = forumRepo.findBycategory_id(categoryid);
+		List<ForumDto> forumDtoList = new ArrayList<>();
+		for(ForumEntity forumEntity: forumEntityList) {
+			forumEntity.setStatus(true);
+			ForumDto forum = 
+					new ForumDto(forumEntity.getQuestionid(),forumEntity.getQuestion(),forumEntity.isStatus(),forumEntity.getAnswers(),forumEntity.getCategory().getId());
+			forumDtoList.add(forum);
 		}
-		throw new InvalidCategoryIdException("Catgory Id is not found:"+categoryid);
+		return forumDtoList;
+		}
+		throw new InvalidCategoryIdException("Category Id Not Found"+categoryid);
 	}
 	}
 

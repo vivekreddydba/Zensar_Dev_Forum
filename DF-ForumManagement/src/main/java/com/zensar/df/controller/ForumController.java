@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 //import com.zensar.df.dto.CategoryDto;
 import com.zensar.df.dto.ForumDto;
+import com.zensar.df.exception.InvalidCategoryIdException;
 //import com.zensar.df.service.CategoryService;
 import com.zensar.df.service.ForumService;
 
@@ -68,8 +69,11 @@ public class ForumController {
 	@GetMapping(value="/question/search/category/{id}",produces= {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
 	@ApiOperation(value="Get All Questions by ID", notes="This request returns all questions with id passed and present in database")
 	public List<ForumDto> getAllQuestionsById(@ApiParam(value="Categoryid",required=true)  @PathVariable("id") Long id){
-	
-		return forumService.getAllQuestionsById(id);
+		
+		if(id <=0 ) {
+			throw new InvalidCategoryIdException();
+		}
+		return forumService.getAllQuestionsByCategoryId(id);
 }
     
 	
