@@ -1,20 +1,21 @@
 package com.zensar.df.service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.zensar.df.dto.CategoryDto;
 import com.zensar.df.dto.ForumDto;
+import com.zensar.df.entity.CategoryEntity;
 import com.zensar.df.entity.ForumEntity;
 import com.zensar.df.exception.InvalidAuthorizationTokenException;
 import com.zensar.df.exception.InvalidCategoryIdException;
 import com.zensar.df.exception.InvalidQuestionIdException;
-import com.zensar.df.exception.InvalidqusIdException;
-import org.springframework.stereotype.Service;
-import com.zensar.df.entity.CategoryEntity;
+import com.zensar.df.exception.InvalidRoleException;
+import com.zensar.df.repo.CategoryRepo;
 import com.zensar.df.repo.ForumRepo;
 
 @Service
@@ -23,6 +24,8 @@ public class ForumServiceImpl implements ForumService{
     ForumRepo forumRepo;
     @Autowired
     CategoryDto categoryDto;
+    @Autowired
+    CategoryRepo categoryRepo;
     @Autowired
     ModelMapper mapper;
     @Autowired
@@ -36,15 +39,25 @@ public class ForumServiceImpl implements ForumService{
     @Autowired
 	UserServiceDelegate userServiceDelegate;
     
-	int lastQuestionid=0;
 	//String question=forumDto.getQuestion();
 	@Override
 	public ForumDto postNewQuestion(ForumDto forumDto, String authToken) {
-		lastQuestionid = lastQuestionid+1;
-		forumDto.setQuestionId(lastQuestionid);
+		if (!userServiceDelegate.isLoggedInUser(authToken)) {
+
+			throw new InvalidAuthorizationTokenException(authToken);
+		}
+		
+		if (!("ROLE_ADMIN".equals(userServiceDelegate.isAdminRole(authToken)))) {
+
+			throw new InvalidRoleException("" + "User Not Allowed");
+		}
 		forumEntity = mapper.map(forumDto,ForumEntity.class);
+		CategoryEntity categoryEntity = categoryRepo.getById(forumDto.getCategoryid());
+		forumEntity.setCategory(categoryEntity);
+		forumEntity.setStatus(true);
 		forumEntity = forumRepo.save(forumEntity);
 		forumDto = mapper.map(forumEntity,ForumDto.class);
+		forumDto.setCategoryid(forumEntity.getCategory().getId());
 		return forumDto;
 		//return new ForumDto(forumDto.getQuestionId(),forumDto.getQuestion(),true,forumDto.getAnswers());
 	}
@@ -61,9 +74,7 @@ public class ForumServiceImpl implements ForumService{
 		    return true;
 		}
 		return false;
-		
-		//throw new InvalidqusIdException (""+questionId);
-		
+				
 		
 	}
 
@@ -90,6 +101,18 @@ public class ForumServiceImpl implements ForumService{
 	    
 		throw new InvalidQuestionIdException(""+questionId);
 	}
+	
+	@Override
+	public List<ForumDto> getAllQuestionsById(long categoryid) {
+		if(forumRepo.existsBycategory_id(categoryid)) {
+		List<ForumEntity> forumEntities = forumRepo.findBycategory_id(categoryid);
+
+			return forumEntities.stream().map(i -> mapper.map(i, ForumDto.class)).collect(Collectors.toList());
+		}
+		throw new InvalidCategoryIdException("Catgory Id is not found:"+categoryid);
 	}
+	}
+
+
 
 

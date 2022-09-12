@@ -1,10 +1,15 @@
 package com.zensar.df.entity;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.springframework.stereotype.Component;
@@ -22,24 +27,29 @@ public class ForumEntity {
 	private boolean status;
 	@Column(name = "answers")
 	private String answers;
-	@Column(name = "categoryid")
-	private long categoryid;
-	@Override
-	public String toString() {
-		return "ForumEntity [questionid=" + questionid + ", question=" + question + ", status=" + status + ", answers="
-				+ answers + ", categoryid=" + categoryid + "]";
+	
+	@ManyToOne(cascade=CascadeType.ALL, fetch = FetchType.EAGER)
+	@JoinColumn(name="category_id")
+	private CategoryEntity category;
+	
+	public CategoryEntity getCategory() {
+		return category;
+	}
+	public void setCategory(CategoryEntity category) {
+		this.category = category;
 	}
 	public ForumEntity() {
 		super();
 	}
-	public ForumEntity(long questionid, String question, boolean status, String answers, long categoryid) {
-		super();
-		this.questionid = questionid;
-		this.question = question;
-		this.status = status;
-		this.answers = answers;
-		this.categoryid = categoryid;
-	}
+	
+	public ForumEntity(long questionid, String question, boolean status, String answers, CategoryEntity category) {
+	super();
+	this.questionid = questionid;
+	this.question = question;
+	this.status = status;
+	this.answers = answers;
+	this.category = category;
+}
 	public long getQuestionid() {
 		return questionid;
 	}
@@ -64,11 +74,10 @@ public class ForumEntity {
 	public void setAnswers(String answers) {
 		this.answers = answers;
 	}
-	public long getCategoryid() {
-		return categoryid;
-	}
-	public void setCategoryid(long categoryid) {
-		this.categoryid = categoryid;
+	@Override
+	public String toString() {
+		return "ForumEntity [questionid=" + questionid + ", question=" + question + ", status=" + status + ", answers="
+				+ answers + ", category=" + category + "]";
 	}
 	
 	

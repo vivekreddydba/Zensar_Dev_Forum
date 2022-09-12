@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.zensar.df.dto.CategoryDto;
+import com.zensar.df.dto.ForumDto;
 import com.zensar.df.entity.CategoryEntity;
 import com.zensar.df.exception.InvalidAuthorizationTokenException;
 import com.zensar.df.exception.InvalidCategoryIdException;
@@ -30,14 +31,22 @@ public class CategoryServiceImpl implements CategoryService {
 	@Autowired
 	UserServiceDelegate userServiceDelegate;
 	
-	int lastCategoryId=0;
 	
 	@Override
 	public CategoryDto createNewCategory(CategoryDto categoryDto, String authToken) {
-		lastCategoryId = lastCategoryId+1;
-		categoryDto.setId(lastCategoryId);
-		CategoryEntity categoryEntity = new CategoryEntity(categoryDto.getId(),categoryDto.getName());
+		
+		if (!userServiceDelegate.isLoggedInUser(authToken)) {
+
+			throw new InvalidAuthorizationTokenException(authToken);
+		}
+		
+		if (!("ROLE_ADMIN".equals(userServiceDelegate.isAdminRole(authToken)))) {
+
+			throw new InvalidRoleException("" + "User Not Allowed");
+		}
+		categoryEntity = mapper.map(categoryDto, CategoryEntity.class);
 		categoryEntity = categoryRepo.save(categoryEntity);
+		categoryDto = mapper.map(categoryEntity,CategoryDto.class);
 		return new CategoryDto(categoryDto.getId(),categoryDto.getName());
 	}
 	

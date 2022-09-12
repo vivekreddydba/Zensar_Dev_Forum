@@ -1,6 +1,7 @@
 package com.zensar.df.controller;
 
 import java.io.IOException;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -8,6 +9,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -22,6 +24,7 @@ import com.zensar.df.dto.ForumDto;
 import com.zensar.df.service.ForumService;
 
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 
 @RestController
 @CrossOrigin(origins="*")
@@ -35,9 +38,9 @@ public class ForumController {
     ForumDto forumDto;
 	@PostMapping(value="/question", consumes=MediaType.APPLICATION_JSON_VALUE, produces=MediaType.APPLICATION_JSON_VALUE)
 	@ApiOperation(value="New question", notes="This request creates new question which is posted by user")
-	public ResponseEntity<ForumDto> postNewQuestion(@RequestBody ForumDto forumDto, @RequestHeader(value="Authorization", required=false) String authToken) throws IOException {
+	public ResponseEntity<ForumDto> postNewQuestion(@RequestBody ForumDto forumDto, @RequestHeader("Authorization") String authToken) throws IOException {
 		forumDto = this.forumService.postNewQuestion(forumDto,authToken);
-		if(forumDto.getQuestion()==null) {
+		if(forumDto.getQuestion()==null || forumDto.getQuestion().isEmpty() ) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 		return new ResponseEntity<>(forumDto, HttpStatus.CREATED);
@@ -61,6 +64,13 @@ public class ForumController {
 		}
 		return new ResponseEntity<ForumDto>(HttpStatus.BAD_REQUEST);
     }
+	
+	@GetMapping(value="/question/search/category/{id}",produces= {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
+	@ApiOperation(value="Get All Questions by ID", notes="This request returns all questions with id passed and present in database")
+	public List<ForumDto> getAllQuestionsById(@ApiParam(value="Categoryid",required=true)  @PathVariable("id") Long id){
+	
+		return forumService.getAllQuestionsById(id);
+}
     
 	
 }

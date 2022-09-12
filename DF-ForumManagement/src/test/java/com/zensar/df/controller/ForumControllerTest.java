@@ -1,9 +1,12 @@
 package com.zensar.df.controller;
 
+import static org.hamcrest.CoreMatchers.containsString;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 //import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -16,6 +19,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.zensar.df.dto.CategoryDto;
 import com.zensar.df.dto.ForumDto;
 //import com.zensar.df.entity.ForumEntity;
 import com.zensar.df.service.ForumService;
@@ -109,5 +113,41 @@ public class ForumControllerTest {
 				.andReturn();
 		        
 	}
+	
+	@Test
+	public void postNewQuestionTest() throws Exception{
+		ForumDto forum = new ForumDto();
+		forum.setQuestion("What is spring");
+		forum.setCategoryid(2);
+		HttpHeaders httpHeaders = new HttpHeaders();
+		httpHeaders.set("Authorization", "YD69425");
+		when(this.forumservice.postNewQuestion(forum, "YD69425")).thenReturn(forum);
+		MvcResult mvcResult = this.mockmvc.perform(post("http://localhost:8001/devforum/question/")
+				.contentType("application/json")
+				.content(objectMapper.writeValueAsString(forum))
+				.headers(httpHeaders)
+				).andExpect(status().isCreated())
+				.andExpect(content().string(containsString("spring")))
+				.andReturn();
+	            String response = mvcResult.getResponse().getContentAsString();
+	            System.out.println(response);
+	            assertEquals(response.contains("spring"), true);
+}
+	
+	@Test
+	public void postNewQuestionByNullQuestionTest() throws Exception{
+		ForumDto forum = new ForumDto();
+		forum.setQuestion(null);
+		forum.setCategoryid(2);
+		HttpHeaders httpHeaders = new HttpHeaders();
+		httpHeaders.set("Authorization", "YD69425");
+		when(this.forumservice.postNewQuestion(forum, "YD69425")).thenReturn(forum);
+		MvcResult mvcResult = this.mockmvc.perform(post("http://localhost:8001/devforum/question/")
+				.contentType("application/json")
+				.content(objectMapper.writeValueAsString(forum))
+				.headers(httpHeaders)
+				).andExpect(status().isBadRequest())
+				.andReturn();
+}
 }
 

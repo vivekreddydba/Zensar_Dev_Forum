@@ -33,7 +33,7 @@ public class CategoryController {
 	private CategoryService categoryService;
 	@PostMapping(value="/category", consumes={MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE}, produces={MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
 	@ApiOperation(value="New question category", notes="This request creates new question category")
-	public ResponseEntity<CategoryDto> createNewCategory(@Valid @RequestBody CategoryDto categoryDto, @RequestHeader(value="Authorization", required=false) String authToken) throws IOException {
+	public ResponseEntity<CategoryDto> createNewCategory(@Valid @RequestBody CategoryDto categoryDto, @RequestHeader("Authorization") String authToken) throws IOException {
 		CategoryDto categoryDTO = this.categoryService.createNewCategory(categoryDto,authToken);
 		return new ResponseEntity<CategoryDto>(categoryDTO, HttpStatus.CREATED);
 	} 

@@ -1,10 +1,15 @@
 package com.zensar.df.entity;
 
+import java.util.Set;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.springframework.stereotype.Component;
@@ -14,10 +19,13 @@ import org.springframework.stereotype.Component;
 public class CategoryEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "categoryId")
+	@Column(name = "category_id")
 	private long id;
-	@Column(name = "categoryName")
+	@Column(name = "category_name")
 	private String name;
+	
+	@OneToMany(cascade= CascadeType.ALL,fetch=FetchType.LAZY, mappedBy = "category")
+	private Set<ForumEntity> questions;
 	public CategoryEntity() {
 		super();
 	}
@@ -31,6 +39,12 @@ public class CategoryEntity {
 	}
 	public void setId(long id) {
 		this.id = id;
+	}
+	public Set<ForumEntity> getQuestions() {
+		return questions;
+	}
+	public void setQuestions(Set<ForumEntity> questions) {
+		this.questions = questions;
 	}
 	public String getName() {
 		return name;
