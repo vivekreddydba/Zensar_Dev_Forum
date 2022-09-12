@@ -18,6 +18,11 @@ public class CategoryDto {
 		this.id = id;
 		this.name = name;
 	}
+	public CategoryDto( String name) {
+		super();
+		//this.id = id;
+		this.name = name;
+	}
 	public CategoryDto() {
 		super();
 	}
