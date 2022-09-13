@@ -52,6 +52,22 @@ public class UserServiceDelegateImpl implements UserServiceDelegate{
 		}
 	    return result.getBody();
 	}
-	
+
+	@Override
+	public String hasUserName(String auth) {
+		HttpHeaders header=new HttpHeaders();
+		header.set("Authorization", auth);
+		HttpEntity entity=new HttpEntity(header);
+		ResponseEntity<String> result = null;
+		try {
+			result =
+					this.restTemplate.exchange("http://localhost:8000/devforum/user/username",  
+		                    HttpMethod.GET, entity, String.class);
+		}
+		catch(Exception e) {
+		return null;
+	}
+	return result.getBody();
+	}
 
 }

@@ -42,6 +42,9 @@ public class UserServiceImpl implements UserService, UserDetailsService{
 	@Autowired
 	JwtUtils jwtUtils;
 	
+	@Autowired
+	BlacklistRepo blackListRepo;
+	
 
 
 	@Autowired
@@ -109,6 +112,10 @@ public class UserServiceImpl implements UserService, UserDetailsService{
 
 	public void setUserRepo(UserRepo userRepo) {
 		this.userRepo = userRepo;
+	}
+	
+	public void setBlackListRepo(BlacklistRepo blackListRepo) {
+		this.Blrepo = blackListRepo;
 	}
 	
 }

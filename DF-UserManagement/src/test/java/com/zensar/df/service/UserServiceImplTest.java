@@ -68,4 +68,15 @@ public class UserServiceImplTest {
         assertEquals("anand", user.getUsername());
     }
 	
+	@Test
+	public void testLogoutUser() throws Exception{
+		BlacklistRepo blackListRepo = mock(BlacklistRepo.class);
+		userService.setBlackListRepo(blackListRepo);
+		BlackListEntity be=new BlackListEntity();
+		when(blackListRepo.save(be)).thenReturn(be);
+		Boolean res=this.userService.logoutUser("A1B2C3");
+		assertEquals(res,true);
+		
+	}
+	
 }

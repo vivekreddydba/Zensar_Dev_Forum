@@ -34,7 +34,16 @@ public class DtoTest {
 		ForumDto forum=new ForumDto("devops",true,"development",2);
 		assertEquals(forum.getQuestion(),"devops");
 		assertEquals(forum.getCategoryid(),2);
+		assertEquals(forum.getAnswers(),"development");
+		assertEquals(forum.isStatus(),true);
 		
+	}
+	
+	@Test
+	public void testParameterisedForumDto1() throws Exception{
+		ForumDto forum = new ForumDto(1,"what is docker");
+		assertEquals(forum.getQuestionId(),1);
+		assertEquals(forum.getQuestion(),"what is docker");
 	}
 	
 

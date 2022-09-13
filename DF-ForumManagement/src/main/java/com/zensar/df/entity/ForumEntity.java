@@ -42,6 +42,15 @@ public class ForumEntity {
 		super();
 	}
 	
+	public ForumEntity(long questionid, String question, boolean status, String answers) {
+		super();
+		this.questionid = questionid;
+		this.question = question;
+		this.status = status;
+		this.answers = answers;
+		//this.category = category;
+	}
+	
 	public ForumEntity(long questionid, String question, boolean status, String answers, CategoryEntity category) {
 	super();
 	this.questionid = questionid;

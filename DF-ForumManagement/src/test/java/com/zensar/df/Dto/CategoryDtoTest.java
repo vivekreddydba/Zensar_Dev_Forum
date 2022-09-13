@@ -29,5 +29,12 @@ public class CategoryDtoTest {
 		assertEquals(category.getName(),"c");
 	}
 	
+	@Test
+	public void testParameterisedDto1() throws Exception{
+		CategoryDto category = new CategoryDto(1,"java");
+		assertEquals(category.getId(),1);
+		assertEquals(category.getName(),"java");
+		
+	}
 
 }
