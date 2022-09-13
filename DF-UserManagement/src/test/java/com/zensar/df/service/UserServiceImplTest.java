@@ -69,6 +69,23 @@ public class UserServiceImplTest {
     }
 	
 	@Test
+	public void testByFirstnameRegisterUser() throws Exception{
+		UserRepo userRepo = mock(UserRepo.class);
+		userService.setUserRepo(userRepo);
+        UserDto user=new UserDto("Anand","Kulkarni","anand","anand123","anand@gmail.com","9999999999","ROLE_USER");
+        UserEntity userEntity = new UserEntity("anand", " kulkarni","anand", "anand123", "anand@123", "12344555", "ROLE_ADMIN");
+        List<UserEntity> userList = new ArrayList<>();
+        userList.add(userEntity);
+        when(userRepo.save(any())).thenReturn(userEntity);
+        when(userRepo.findByUsername("bhagya")).thenReturn(userList);
+
+        UserDto userDto = this.userService.registerUser(user);
+        
+
+        assertEquals("Anand", user.getFirstname());
+    }
+	
+	@Test
 	public void testLogoutUser() throws Exception{
 		BlacklistRepo blackListRepo = mock(BlacklistRepo.class);
 		userService.setBlackListRepo(blackListRepo);
