@@ -36,6 +36,8 @@ public class ForumServiceImpl implements ForumService{
     
     @Autowired
     ForumRepo forumrepo;
+    @Autowired
+    CategoryEntity categoryEntity;
     
     @Autowired
 	UserServiceDelegate userServiceDelegate;
@@ -81,27 +83,31 @@ public class ForumServiceImpl implements ForumService{
 
 	
 	@Override
-	public ForumDto updateQuestion(long questionId, ForumDto forum, String auth) {
-		
-		if(!userServiceDelegate.isLoggedInUser(auth)) {
-			
-			throw new InvalidAuthorizationTokenException(auth);
-		}
-		
-		ForumEntity forumEntity = forumRepo.getById(questionId);
-
-		if(forumRepo.existsById(questionId)){
+    public ForumDto updateQuestion(long questionId, ForumDto forum, String auth) {
+        
+        if(!userServiceDelegate.isLoggedInUser(auth)) {
+            
+            throw new InvalidAuthorizationTokenException(auth);
+        }
+      //  ForumEntity forumEntity = mapper.map(forumDto,ForumEntity.class);
+        ForumEntity forumEntity = forumRepo.getById(questionId);
 
 
-			forumEntity.setQuestion(forum.getQuestion());
 
-	        ForumEntity updatedquestion = forumRepo.save(forumEntity);
+       if(forumRepo.existsById(questionId)){
 
-	        return new ForumDto(updatedquestion.getQuestionid(), updatedquestion.getQuestion());
-	    }
-	    
-		throw new InvalidQuestionIdException(""+questionId);
-	}
+    	   CategoryEntity categoryEntity = categoryRepo.getById(forum.getCategoryid());
+    	   forumEntity.setCategory(categoryEntity);
+           //ForumDto forumDto = mapper.map(forumEntity,ForumDto.class);
+            forumEntity.setQuestion(forum.getQuestion());
+            forumEntity.setStatus(forum.isStatus());
+            ForumEntity forumEntity1 = mapper.map(forumDto,ForumEntity.class);
+           ForumEntity updatedquestion = forumRepo.save(forumEntity);
+           return new ForumDto(updatedquestion.getQuestionid(), updatedquestion.getQuestion(),updatedquestion.isStatus(),updatedquestion.getAnswers(),updatedquestion.getCategory().getId());
+        }
+        
+        throw new InvalidQuestionIdException(""+questionId);
+    }
 	
 	
 	public List<ForumDto> getAllQuestionsByCategoryId(long categoryid){
