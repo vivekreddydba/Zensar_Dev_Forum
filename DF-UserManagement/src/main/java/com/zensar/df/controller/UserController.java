@@ -143,7 +143,7 @@ public class UserController {
 			catch(Exception e) {
 				return new ResponseEntity<UserDto>(HttpStatus.BAD_REQUEST);
 			}
-			if(isTokenValid) {
+			if(this.isTokenValid(jwtToken)== new ResponseEntity<Boolean>(true,HttpStatus.OK)) {
 				user = userService.findUserByUsername(username).get(0);		
 				return new ResponseEntity<UserDto>(user,HttpStatus.ACCEPTED);
 			}
