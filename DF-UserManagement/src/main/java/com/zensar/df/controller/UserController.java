@@ -86,8 +86,11 @@ public class UserController {
 	@PostMapping(value = "/user", consumes= {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE},produces= {MediaType.APPLICATION_JSON_VALUE,MediaType.APPLICATION_XML_VALUE})
 	@ApiOperation(value="Registration of a user", notes="This request saves the details of user in the database")
 	public ResponseEntity<UserDto> registerUser(@Valid @RequestBody UserDto userdto) {
-		UserDto user=userService.registerUser(userdto);
-		return new ResponseEntity<UserDto>(user,HttpStatus.OK);
+		if(!"".equals(userdto.getFirstname()) || !"".equals(userdto.getUsername())) {
+		    UserDto user=userService.registerUser(userdto);
+		    return new ResponseEntity<UserDto>(user,HttpStatus.OK);
+		}
+		return new ResponseEntity<UserDto>(HttpStatus.BAD_REQUEST);
 		
 	}
 	@DeleteMapping(value="/user/logout")

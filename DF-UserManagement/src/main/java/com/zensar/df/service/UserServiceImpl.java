@@ -62,7 +62,7 @@ public class UserServiceImpl implements UserService, UserDetailsService{
 	@Override
 	public UserDto registerUser(UserDto userdto) {
 		UserEntity userEntity=new UserEntity(userdto.getFirstname(), userdto.getLastname(), userdto.getUsername(), userdto.getPassword(), userdto.getEmail(), userdto.getPhone(), userdto.getRole());
-		List<UserEntity> userEntityList =userRepo.findByUsername(userdto.getUsername());
+		List<UserEntity> userEntityList =this.userRepo.findByUsername(userdto.getUsername());
 		if(userEntityList==null || userEntityList.size()==0) {
 			  userEntity=userRepo.save(userEntity);
 			  userdto=new UserDto(userEntity.getId(), userEntity.getFirstname(), userEntity.getLastname(), userEntity.getUsername(), userEntity.getPassword(), userEntity.getEmail(), userEntity.getPhone(), userEntity.getRole());
@@ -107,5 +107,8 @@ public class UserServiceImpl implements UserService, UserDetailsService{
 		
 	}
 
-
+	public void setUserRepo(UserRepo userRepo) {
+		this.userRepo = userRepo;
+	}
+	
 }

@@ -91,6 +91,24 @@ public class UserControllerTest {
 	}
 	
 	@Test
+	public void testRegisterUserBlankPhone() throws Exception{
+		UserDto user = new UserDto();
+		user.setFirstname("Anand");
+		user.setLastname("Kulkarni");
+		user.setUsername("anand");
+		user.setPassword("anand123");
+		user.setEmail("anand@gmail.com");
+		user.setPhone("");
+		user.setRole("ROLE_ADMIN");
+		when(this.userService.registerUser(user)).thenReturn(user);
+		MvcResult mvcResult = this.mockMvc.perform(post("http://localhost:8000/devforum/user/")
+				.contentType("application/json")
+				.content(objectMapper.writeValueAsString(user))
+				).andExpect(status().isBadRequest())
+				.andReturn();
+	}
+	
+	@Test
 	public void testlogoutInvaliduser() throws Exception {
 		HttpHeaders httpHeaders = new HttpHeaders();
 		httpHeaders.set("Authorization", "A1B2C3D4");
@@ -152,7 +170,6 @@ public class UserControllerTest {
 	            .headers(httpHeaders))
 	            .andExpect(status().isBadRequest())
 	            .andReturn();
-		    }
-                 
+		    }  
 	
 }
