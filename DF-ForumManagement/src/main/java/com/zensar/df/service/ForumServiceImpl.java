@@ -119,6 +119,9 @@ public class ForumServiceImpl implements ForumService{
 		}
 		throw new InvalidCategoryIdException("Category Id Not Found"+categoryid);
 	}
+	public void setForumRepo(ForumRepo forumRepo) {
+		this.forumrepo = forumRepo;
+	}
 	}
 
 

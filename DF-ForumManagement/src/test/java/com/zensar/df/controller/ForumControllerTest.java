@@ -157,7 +157,7 @@ public class ForumControllerTest {
 	@Test
 	public void getAllQuestionsByCategoryIdTest() throws Exception {
 		List<ForumDto> forumDtoList = new ArrayList<ForumDto>();
-		forumDtoList.add(new ForumDto(1,"What is Spring Boot",true,"Spring is security",32));
+		forumDtoList.add(new ForumDto(1,"What is Spring Boot",true,null,32));
 		when(this.forumservice.getAllQuestionsByCategoryId(32)).
 			thenReturn(forumDtoList);
 		
@@ -171,7 +171,7 @@ public class ForumControllerTest {
 	@Test
 	public void getAllQuestionsByInvalidCategoryIdTest() throws Exception {
 		List<ForumDto> forumDtoList = new ArrayList<ForumDto>();
-		forumDtoList.add(new ForumDto(1,"What is Spring Boot",true,"Spring is security",-1));
+		forumDtoList.add(new ForumDto(1,"What is Spring Boot",true,null,-1));
 		when(this.forumservice.getAllQuestionsByCategoryId(-1)).
 			thenReturn(forumDtoList);
 		

@@ -21,7 +21,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-
 import com.zensar.df.dto.UserDto;
 import com.zensar.df.entity.BlackListEntity;
 import com.zensar.df.entity.UserEntity;
@@ -106,7 +105,13 @@ public class UserServiceImpl implements UserService, UserDetailsService{
 	public List<UserDto> findUserByUsername(String username) throws UsernameNotFoundException {
 		// Write user Entity and UserRepo
 		List<UserEntity>userEntityList = userRepo.findByUsername(username);
-		return userEntityList.stream().map(i -> mapper.map(i, UserDto.class)).collect(Collectors.toList());
+		List<UserDto> userDtoList = new ArrayList<>();
+		for(UserEntity userEntity: userEntityList) {
+			UserDto user = 
+					new UserDto(userEntity.getId(),userEntity.getFirstname(),userEntity.getLastname(),userEntity.getEmail(),userEntity.getUsername(),userEntity.getPassword(),userEntity.getPhone(),userEntity.getRole());
+			userDtoList.add(user);
+		}
+		return userDtoList;
 		
 	}
 	

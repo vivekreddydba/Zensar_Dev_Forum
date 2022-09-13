@@ -8,12 +8,9 @@ import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.zensar.df.dto.CategoryDto;
-import com.zensar.df.dto.ForumDto;
 import com.zensar.df.entity.CategoryEntity;
 import com.zensar.df.exception.InvalidAuthorizationTokenException;
 import com.zensar.df.exception.InvalidCategoryIdException;
@@ -69,12 +66,13 @@ public class CategoryServiceImpl implements CategoryService {
 	
 
 	@Override
-	public List<CategoryDto> getAllCategoriesById(Long id) {
+	public CategoryDto getAllCategoriesById(Long id) {
 		Optional<CategoryEntity> opcategoryEntities = categoryRepo.findById(id);
 		if(opcategoryEntities.isPresent()) {
 			CategoryEntity categoryEntity = opcategoryEntities.get();
 		
-			return opcategoryEntities.stream().map(i -> mapper.map(i, CategoryDto.class)).collect(Collectors.toList());
+			//return opcategoryEntities.stream().map(i -> mapper.map(i, CategoryDto.class)).collect(Collectors.toList());
+			return new CategoryDto(categoryEntity.getId(), categoryEntity.getName());
 			
 		}
 		throw new InvalidCategoryIdException("Catgory Id is not found:"+id);
@@ -135,5 +133,8 @@ public class CategoryServiceImpl implements CategoryService {
             return new CategoryDto(updatedCategory.getId(), updatedCategory.getName());
         }
 		throw new InvalidCategoryIdException(""+categoryId);
+	}
+	public void setCategoryRepo(CategoryRepo categoryRepo) {
+		this.categoryRepo = categoryRepo;
 	}
 }

@@ -70,11 +70,10 @@ public class CategoryControllerTest {
 	
 	@Test
 	public void testgetAllCategoriesById() throws Exception {
-		List<CategoryDto> categoryDtoList = new ArrayList<CategoryDto>();
-		categoryDtoList.add(new CategoryDto(1,"Spring Boot"));
+		CategoryDto categoryDto =new CategoryDto(1,"Spring Boot");
 		long val = 1;
 		when(this.categoryService.getAllCategoriesById(val)).
-			thenReturn(categoryDtoList);
+			thenReturn(categoryDto);
 		
 		MvcResult mvcResult = this.mockMvc.perform(get("http://localhost:8001/devforum/category/1"))
 				.andExpect(status().isOk())
@@ -85,17 +84,16 @@ public class CategoryControllerTest {
 	
 	@Test
 	public void test2getAllCategoriesById() throws Exception {
-		List<CategoryDto> categoryDtoList = new ArrayList<CategoryDto>();
-		categoryDtoList.add(new CategoryDto(1,"Spring Boot"));
+		CategoryDto categoryDto =new CategoryDto(1,"Spring Boot");
 		long val = -1;
 		when(this.categoryService.getAllCategoriesById(val)).
-			thenReturn(categoryDtoList);
+			thenReturn(categoryDto);
 		
 		MvcResult mvcResult = this.mockMvc.perform(get("http://localhost:8001/devforum/category/1"))
 				.andExpect(status().isOk())
 				.andReturn();
 		String response = mvcResult.getResponse().getContentAsString();
-		assertEquals(response.contains("[]"), true);
+		assertEquals(response.contains(""), true);
 	}
 	
 	@Test

@@ -1,5 +1,6 @@
 package com.zensar.df.dto;
 
+import java.util.List;
 import java.util.Objects;
 
 import org.springframework.stereotype.Component;
@@ -40,8 +41,8 @@ public class ForumDto {
 	public String getAnswers() {
 		return answers;
 	}
-	public void setAnswers(String answers) {
-		this.answers = answers;
+	public void setAnswers(String string) {
+		this.answers = string;
 	}
 	public long getCategoryid() {
 		return categoryid;
