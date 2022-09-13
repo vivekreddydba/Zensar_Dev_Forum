@@ -74,6 +74,10 @@ public class UserController {
 			return new ResponseEntity<Boolean>(false, HttpStatus.BAD_REQUEST);
 		}
 		if(isTokenValid) {
+			Boolean isTokenBlacklisted = userService.isTokenBlacklisted(jwtToken);
+			if(isTokenBlacklisted) {
+				return new ResponseEntity<Boolean>(false, HttpStatus.BAD_REQUEST);
+			}
 			return new ResponseEntity<Boolean>(true, HttpStatus.OK);
 		}else {
 			return new ResponseEntity<Boolean>(false, HttpStatus.BAD_REQUEST);

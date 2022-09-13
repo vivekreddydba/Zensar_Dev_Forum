@@ -49,11 +49,6 @@ public class ForumServiceImpl implements ForumService{
 
 			throw new InvalidAuthorizationTokenException(authToken);
 		}
-		
-		if (!("ROLE_ADMIN".equals(userServiceDelegate.isAdminRole(authToken)))) {
-
-			throw new InvalidRoleException("" + "User Not Allowed");
-		}
 		forumEntity = mapper.map(forumDto,ForumEntity.class);
 		CategoryEntity categoryEntity = categoryRepo.getById(forumDto.getCategoryid());
 		forumEntity.setCategory(categoryEntity);

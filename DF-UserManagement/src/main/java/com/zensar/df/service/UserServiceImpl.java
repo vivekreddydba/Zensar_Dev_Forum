@@ -109,6 +109,16 @@ public class UserServiceImpl implements UserService, UserDetailsService{
 		return userEntityList.stream().map(i -> mapper.map(i, UserDto.class)).collect(Collectors.toList());
 		
 	}
+	
+	@Override
+	public Boolean isTokenBlacklisted(String auth) {
+		List<BlackListEntity> blackListEntity = Blrepo.findAll();
+		String BlackList = blackListEntity.toString();
+		if(BlackList.contains(auth))
+		return true;
+		else
+		return false;
+	}
 
 	public void setUserRepo(UserRepo userRepo) {
 		this.userRepo = userRepo;

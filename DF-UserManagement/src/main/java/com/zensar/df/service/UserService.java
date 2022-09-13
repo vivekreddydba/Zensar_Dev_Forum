@@ -19,5 +19,5 @@ public interface UserService {
 	UserDetails loadUserByUsername(String username) throws UsernameNotFoundException;
 	List<UserDto> findUserByUsername(String username) throws UsernameNotFoundException;
 	String getRole(String username);
-	
+	Boolean isTokenBlacklisted(String auth);
 }
