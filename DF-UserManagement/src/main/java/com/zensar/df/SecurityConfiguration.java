@@ -1,5 +1,6 @@
 package com.zensar.df;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -26,13 +27,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	}
 	
 	
-	
 	@Override
 	public void configure(HttpSecurity http) throws Exception { // to override default authorization
 		http.csrf().disable()
 		.authorizeRequests()
 		.antMatchers("/devforum/admin").hasRole("ADMIN")
-		//.antMatchers("/devforum/user/role").hasAnyRole("USER", "ADMIN")
 		.antMatchers("/devforum/user/authenticate", "/devforum/user/logout", "/devforum/user", "/devforum/user/role").permitAll()
 		.and()
 		.formLogin();

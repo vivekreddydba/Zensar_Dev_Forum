@@ -98,25 +98,7 @@ public class CategoryServiceImplTest {
         assertEquals("python", categoryDto.getName());
         
     }
-	/*
-	@Test
-    public void testCreateNewCategory() throws Exception {
-		ModelMapper mapper= mock(ModelMapper.class);
-    	categoryService.setMapper(mapper);
-    	CategoryRepo categoryRepo =mock(CategoryRepo.class);
-        categoryService.setCategoryRepo(categoryRepo);
-        UserServiceDelegateImpl userServiceDelegate=mock(UserServiceDelegateImpl.class);
-        HttpHeaders httpHeaders=new HttpHeaders();
-        httpHeaders.set("Authorization", "A1B2C3");
-        CategoryDto categoryDto = new CategoryDto(1,"python");
-        CategoryEntity categoryEntity = new CategoryEntity(1,"python");
-        when(categoryRepo.save(any())).thenReturn(categoryEntity);
-        CategoryDto returnedcategoryDto = categoryService.createNewCategory(categoryDto, "A1B2C3");
-        
-        assertEquals("python", categoryDto.getName());
-        
-    }
-    */
+	
 	
 
 }

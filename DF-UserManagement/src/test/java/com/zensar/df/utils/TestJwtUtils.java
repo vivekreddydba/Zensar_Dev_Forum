@@ -11,7 +11,6 @@ import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -24,7 +23,6 @@ import com.zensar.df.entity.UserEntity;
 import com.zensar.df.repo.UserRepo;
 import com.zensar.df.service.UserServiceImpl;
 
-//@WebMvcTest(JwtUtils.class)
 public class TestJwtUtils {
 	@Autowired
 	MockMvc mockMvc;

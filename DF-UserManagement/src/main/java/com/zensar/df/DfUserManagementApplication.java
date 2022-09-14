@@ -36,7 +36,7 @@ public class DfUserManagementApplication {
 	}
 	@Bean ApiInfo getAppdetails() {
 		Contact contact = new Contact("Dev-Forum","https://Dev-Forum.com","DevForum@gmail.com");
-		ApiInfo appInfo = new ApiInfo(
+		return new ApiInfo(
 				"Dev-Forum Application",
 				"Dev-Forum Management",
 				"1.0.0",
@@ -46,6 +46,5 @@ public class DfUserManagementApplication {
 				"https://gplliscense.com",
 				new ArrayList<VendorExtension>()
 				);
-		return appInfo;
 	}
 }

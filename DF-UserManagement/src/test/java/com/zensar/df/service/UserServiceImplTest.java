@@ -8,8 +8,6 @@ import static org.mockito.Mockito.when;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.catalina.mapper.Mapper;
-import org.junit.Before;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.modelmapper.ModelMapper;
@@ -150,7 +148,7 @@ public class UserServiceImplTest {
 		List<UserDto> userList=new ArrayList<>();
 		List<UserEntity> userEntity=new ArrayList<>();
 		UserDto user=new UserDto("Bindu","Madhavi","bindu","bindu123","bindu@gmail.com","9988776655","ROLE_USER");
-		UserEntity entityUser=new UserEntity(1,"Bindu","Madhavi","bindu","bindu123","bindu@gmail.com","9988776655","ROLE_USER");
+		UserEntity entityUser=new UserEntity("Bindu","Madhavi","bindu","bindu123","bindu@gmail.com","9988776655","ROLE_USER");
 		userList.add(user);
 		userEntity.add(entityUser);
 		when(userRepo.findByUsername(entityUser.getUsername())).thenReturn(userEntity);

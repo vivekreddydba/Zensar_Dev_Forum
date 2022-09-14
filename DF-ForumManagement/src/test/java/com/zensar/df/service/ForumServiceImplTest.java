@@ -112,48 +112,4 @@ public class ForumServiceImplTest {
         assertEquals("python", forumDto.getQuestion());
         
     }
-    
-    
- /*
-    @Test
-    public void getAllQuestionsByUserTest() throws Exception {
-    	
-    	ForumRepo forumRepo =mock(ForumRepo.class);
-        forumService.setForumRepo(forumRepo);
-        UserServiceDelegateImpl userServiceDelegate=mock(UserServiceDelegateImpl.class);
-        HttpHeaders httpHeaders=new HttpHeaders();
-        httpHeaders.set("Authorization", "Bearer A1B2C3");
-        ForumDto forumDto = new ForumDto(1,"python",true,"development",37,"Akhil");
-        CategoryEntity categoryEntity = new CategoryEntity(37,"Spring");
-		List<ForumEntity> forumEntityList = new ArrayList<ForumEntity>();
-		forumEntityList.add(new ForumEntity(1,"What is Spring Boot",true,null,categoryEntity));
-        when(forumRepo.findByusername("Akhil")).thenReturn(forumEntityList);
-        
-        List<ForumDto> returnedForumDtoList = forumService.getAllQuestionsByUser("Bearer A1B2C3");
-        
-        assertEquals("What is Spring Boot", forumDto.getQuestion());
-        
-    }
-    
-        @Test
-    public void testPostNewQuestionCategory() throws Exception{
-    	ModelMapper mapper= mock(ModelMapper.class);
-        ForumRepo forumRepo =mock(ForumRepo.class);
-        forumService.setForumRepo(forumRepo);
-        CategoryRepo categoryRepo =mock(CategoryRepo.class);
-        forumService.setCategoryRepo(categoryRepo);
-        UserServiceDelegateImpl userServiceDelegate=mock(UserServiceDelegateImpl.class);
-        HttpHeaders httpHeaders=new HttpHeaders();
-        httpHeaders.set("Authorization", "A1B2C3");
-        ForumDto forumDto=new ForumDto(1,"python",true,"development",3);
-        CategoryEntity categoryEntity = new CategoryEntity(3,"Python");
-        ForumEntity forumEntity=new ForumEntity(1,"python",true,"development",categoryEntity);
-        when(forumRepo.save(any())).thenReturn(forumEntity);
-        forumService.setMapper(mapper);
-        ForumDto forum = forumService.postNewQuestion(forumDto, "A1B2C3");
-        assertEquals("python",forumDto.getAnswers());
-
-   }
-
-    */
 }
