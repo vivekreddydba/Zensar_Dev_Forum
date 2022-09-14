@@ -35,7 +35,6 @@ public class ForumServiceImplTest {
     	forumService = new ForumServiceImpl();
     }
     
-    
 //    @Test
 //    public void getAllQuestionsByCategoryId() throws Exception {
 //    	
