@@ -61,5 +61,11 @@ public class CategoryServiceImplTest {
         
     }
 	
+	@Test
+    public void DeleteCategorieyById() throws Exception {
+    	
+        
+    }
+	
 
 }
