@@ -2,22 +2,21 @@ package com.zensar.df.service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
+import org.apache.catalina.mapper.Mapper;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.zensar.df.utils.JwtUtils;
+
 import com.zensar.df.dto.CategoryDto;
 import com.zensar.df.dto.ForumDto;
 import com.zensar.df.entity.CategoryEntity;
 import com.zensar.df.entity.ForumEntity;
-import com.zensar.df.exception.InvalidAuthorizationTokenException;
 import com.zensar.df.exception.InvalidCategoryIdException;
 import com.zensar.df.exception.InvalidQuestionIdException;
-import com.zensar.df.exception.InvalidRoleException;
 import com.zensar.df.repo.CategoryRepo;
 import com.zensar.df.repo.ForumRepo;
+import com.zensar.df.utils.JwtUtils;
 
 @Service
 public class ForumServiceImpl implements ForumService{
@@ -143,7 +142,12 @@ public class ForumServiceImpl implements ForumService{
         return forumDtoList;
     }
 
-	
+	public void setMapper(ModelMapper mapper) {
+		this.mapper = mapper;
+	}
+	public void setCategoryRepo(CategoryRepo categoryRepo) {
+		this.categoryRepo = categoryRepo;
+	}
 }
 
 

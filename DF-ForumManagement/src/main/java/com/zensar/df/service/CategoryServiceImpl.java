@@ -92,4 +92,7 @@ public class CategoryServiceImpl implements CategoryService {
 	public void setCategoryRepo(CategoryRepo categoryRepo) {
 		this.categoryRepo = categoryRepo;
 	}
+	public void setMapper(ModelMapper mapper) {
+		this.mapper = mapper;
+	}
 }
