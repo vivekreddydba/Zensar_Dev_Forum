@@ -32,27 +32,13 @@ public class CategoryServiceImpl implements CategoryService {
 	
 	@Override
 	public CategoryDto createNewCategory(CategoryDto categoryDto, String authToken) {
-		
-		if (!userServiceDelegate.isLoggedInUser(authToken)) {
-
-			throw new InvalidAuthorizationTokenException(authToken);
-		}
-		
-		if (!("ROLE_ADMIN".equals(userServiceDelegate.isAdminRole(authToken)))) {
-
-			throw new InvalidRoleException("" + "User Not Allowed");
-		}
 		categoryEntity = mapper.map(categoryDto, CategoryEntity.class);
 		categoryEntity = categoryRepo.save(categoryEntity);
 		categoryDto = mapper.map(categoryEntity,CategoryDto.class);
 		return new CategoryDto(categoryDto.getId(),categoryDto.getName());
 	}
 	
-//	@Override
-//	public List<CategoryDto> GetAllCategories() {
-//		List<CategoryEntity> categoryEntities = categoryRepo.findAll();
-//		return categoryEntities.stream().map(i -> mapper.map(i, CategoryDto.class)).collect(Collectors.toList());
-//	}
+
 	public List<CategoryDto> GetAllCategories(){
 		List<CategoryEntity> categoryEntityList = categoryRepo.findAll();
 		List<CategoryDto> categoryDtoList = new ArrayList<>();
@@ -70,32 +56,15 @@ public class CategoryServiceImpl implements CategoryService {
 		Optional<CategoryEntity> opcategoryEntities = categoryRepo.findById(id);
 		if(opcategoryEntities.isPresent()) {
 			CategoryEntity categoryEntity = opcategoryEntities.get();
-		
-			//return opcategoryEntities.stream().map(i -> mapper.map(i, CategoryDto.class)).collect(Collectors.toList());
-			return new CategoryDto(categoryEntity.getId(), categoryEntity.getName());
+					return new CategoryDto(categoryEntity.getId(), categoryEntity.getName());
 			
 		}
 		throw new InvalidCategoryIdException("Catgory Id is not found:"+id);
 		
 	}
+	
 	@Override
     public boolean DeleteCategoryById(Long id, String  auth){
-        
-        if (!userServiceDelegate.isLoggedInUser(auth)) {
-
-
-
-           throw new InvalidAuthorizationTokenException(auth);
-        }
-        
-        if (!("ROLE_ADMIN".equals(userServiceDelegate.isAdminRole(auth)))) {
-
-
-
-           throw new InvalidRoleException(""+"User Not Allowed");
-        }
-
-
 
        if(categoryRepo.existsById(id)) {
             CategoryEntity temp=categoryRepo.getById(id);
@@ -104,25 +73,11 @@ public class CategoryServiceImpl implements CategoryService {
         }
         
         return false;
-        
-                
     }
 	
 
 	@Override
 	public CategoryDto updateCategory(long categoryId, CategoryDto category, String auth){
-		
-		if(!userServiceDelegate.isLoggedInUser(auth)) {
-			
-			throw new InvalidAuthorizationTokenException(auth);
-		}
-		
-		if(!("ROLE_ADMIN".equals(userServiceDelegate.isAdminRole(auth)))) {
-			
-			throw new InvalidRoleException("");
-		}
-	
-		
 		CategoryEntity categoryEntity = categoryRepo.getById(categoryId);
 		if(categoryRepo.existsById(categoryId)){
 

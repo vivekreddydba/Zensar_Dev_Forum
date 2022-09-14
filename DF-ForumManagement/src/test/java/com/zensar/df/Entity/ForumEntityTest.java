@@ -29,7 +29,7 @@ public class ForumEntityTest {
 	
 	
 	@Test
-	public void testParameterisedForumDto() throws Exception{
+	public void testParameterisedForumEntity() throws Exception{
 		ForumEntity forum=new ForumEntity(1,"what is c",true,"development");
 		assertEquals(forum.getQuestion(),"what is c");
 		//assertEquals(forum.getCategoryid(),2);

@@ -66,6 +66,14 @@ public class ForumDto {
 		this.answers = answers;
 		this.categoryid = categoryid;
 	}
+	public ForumDto( long questionId,String question, boolean status, String answers) {
+		super();
+		this.questionId = questionId;
+		this.question = question;
+		this.status = status;
+		this.answers = answers;
+		//this.categoryid = categoryid;
+	}
 	public ForumDto( String question, boolean status, String answers, long categoryid) {
 		super();
 		//this.questionId = questionId;

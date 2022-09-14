@@ -2,6 +2,7 @@ package com.zensar.df.controller;
 
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.junit.Assert.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.longThat;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
@@ -27,6 +28,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.zensar.df.dto.CategoryDto;
 import com.zensar.df.dto.ForumDto;
 import com.zensar.df.service.CategoryService;
+import com.zensar.df.service.UserServiceDelegate;
 
 @WebMvcTest(CategoryController.class)
 public class CategoryControllerTest {
@@ -39,6 +41,9 @@ public class CategoryControllerTest {
 	
 	@Autowired
 	ObjectMapper objectMapper;
+	
+	@MockBean
+	UserServiceDelegate userServiceDelegate;
 	
 	@Test
 	public void testGetAllCategories() throws Exception {
@@ -102,6 +107,8 @@ public class CategoryControllerTest {
 		category.setName("Jenkins & Devops");
 		HttpHeaders httpHeaders = new HttpHeaders();
 		httpHeaders.set("Authorization", "YD69425");
+		when(this.userServiceDelegate.isLoggedInUser(any())).thenReturn(true);
+        when(this.userServiceDelegate.isAdminRole(any())).thenReturn("ROLE_ADMIN");
 		when(this.categoryService.createNewCategory(category, "YD69425")).thenReturn(category);
 		MvcResult mvcResult = this.mockMvc.perform(post("http://localhost:8001/devforum/category/")
 				.contentType("application/json")
@@ -119,6 +126,8 @@ public class CategoryControllerTest {
 		CategoryDto category = new CategoryDto();
 		HttpHeaders httpHeaders = new HttpHeaders();
 		httpHeaders.set("Authorization", "YD69425");
+		when(this.userServiceDelegate.isLoggedInUser(any())).thenReturn(true);
+        when(this.userServiceDelegate.isAdminRole(any())).thenReturn("ROLE_ADMIN");
 		when(this.categoryService.createNewCategory(category, "YD69425")).thenReturn(category);
 		MvcResult mvcResult = this.mockMvc.perform(post("http://localhost:8001/devforum/category/")
 				.contentType("application/json")
@@ -137,6 +146,8 @@ public class CategoryControllerTest {
         HttpHeaders httpHeaders=new HttpHeaders();
 		httpHeaders.set("Authorization", "A1B2C3");
 		category.setId(3);
+		when(this.userServiceDelegate.isLoggedInUser(any())).thenReturn(true);
+        when(this.userServiceDelegate.isAdminRole(any())).thenReturn("ROLE_ADMIN");
 		when(this.categoryService.updateCategory(category.getId(), category, "A1B2C3")).thenReturn(category);
 		MvcResult mvcResult = this.mockMvc.perform(put("http://localhost:8001/devforum/category/3")
 				.contentType("application/json")
@@ -155,6 +166,7 @@ public class CategoryControllerTest {
 		HttpHeaders httpHeaders=new HttpHeaders();
 		httpHeaders.set("Authorization", "A1B2C3");
 		category.setId(3);
+		when(this.userServiceDelegate.isLoggedInUser(any())).thenReturn(true);
 		when(this.categoryService.updateCategory(category.getId(), category, "A1B2C3")).thenReturn(category);
 		MvcResult mvcResult = this.mockMvc.perform(put("http://localhost:8001/devforum/category/3")
 				.contentType("application/json")
@@ -169,6 +181,8 @@ public class CategoryControllerTest {
         HttpHeaders httpHeaders=new HttpHeaders();
         httpHeaders.set("Authorization", "A1B2C3");
         category.setId(2);
+        when(this.userServiceDelegate.isLoggedInUser(any())).thenReturn(true);
+        when(this.userServiceDelegate.isAdminRole(any())).thenReturn("ROLE_ADMIN");
         when(this.categoryService.DeleteCategoryById(category.getId(),"A1B2C3")).thenReturn(true);
         MvcResult mvcResult = this.mockMvc.perform(delete("http://localhost:8001/devforum/category/2")
                         .headers(httpHeaders))
@@ -184,6 +198,8 @@ public class CategoryControllerTest {
         HttpHeaders httpHeaders=new HttpHeaders();
         httpHeaders.set("Authorization", "A1B2C3");
         category.setId(2);
+        when(this.userServiceDelegate.isLoggedInUser(any())).thenReturn(true);
+        when(this.userServiceDelegate.isAdminRole(any())).thenReturn("ROLE_ADMIN");
         when(this.categoryService.DeleteCategoryById(category.getId(),"A1B")).thenReturn(true);
         MvcResult mvcResult = this.mockMvc.perform(delete("http://localhost:8001/devforum/category/2")
                         .headers(httpHeaders))

@@ -36,17 +36,21 @@ import io.swagger.annotations.ApiParam;
 public class ForumController {
 	@Autowired
 	private ForumService forumService;
+	@Autowired
+	UserServiceDelegate userServiceDelegate;
+	@Autowired
+    JwtUtils jwtutils;
 //	@Autowired
 	//private CategoryDto categoryDto;
     @Autowired
     ForumDto forumDto;
-    @Autowired
-    UserServiceDelegate userServiceDelegate;
-    @Autowired
-    JwtUtils jwtutils;
 	@PostMapping(value="/question", consumes=MediaType.APPLICATION_JSON_VALUE, produces=MediaType.APPLICATION_JSON_VALUE)
 	@ApiOperation(value="New question", notes="This request creates new question which is posted by user")
 	public ResponseEntity<ForumDto> postNewQuestion(@RequestBody ForumDto forumDto, @RequestHeader("Authorization") String authToken) throws IOException {
+		if (!userServiceDelegate.isLoggedInUser(authToken)) {
+
+			throw new InvalidAuthorizationTokenException(authToken);
+		}
 		forumDto = this.forumService.postNewQuestion(forumDto,authToken);
 		if(forumDto.getQuestion()==null || forumDto.getQuestion().isEmpty() ) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -57,7 +61,11 @@ public class ForumController {
 	@DeleteMapping(value="/question/{id}")
 	@ApiOperation(value="New question", notes="This request deletes question by question id")
 	public ResponseEntity<Boolean> deletequestionbyid(@PathVariable("id") long questionId,@RequestHeader("Authorization")  String authToken){
-		if(forumService.deleteQuestionbyId(questionId, authToken))
+		 if(!userServiceDelegate.isLoggedInUser(authToken)) {
+				
+				throw new InvalidAuthorizationTokenException(authToken);
+	       }
+		if(forumService.deleteQuestionbyId(questionId,authToken))
 		{
 			return new ResponseEntity<>(true,HttpStatus.OK);
 		}
@@ -67,6 +75,10 @@ public class ForumController {
 	@PutMapping(value="/question/{id}", consumes={MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE}, produces={MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
 	@ApiOperation(value="Update question", notes="This request updates specified forum with name passed and present in database")
 	public ResponseEntity<ForumDto> updateQuestion(@RequestHeader("Authorization") String authToken, @PathVariable("id") Long id, @RequestBody ForumDto question){
+        if(!userServiceDelegate.isLoggedInUser(authToken)) {
+            
+            throw new InvalidAuthorizationTokenException(authToken);
+        }
 		if(question.getQuestion()!=null) {
 		   return new ResponseEntity<ForumDto>(forumService.updateQuestion(id,  question, authToken), HttpStatus.OK);
 		}
@@ -90,12 +102,13 @@ public class ForumController {
         }
 		return forumService.getAllQuestionsByUser(authToken);
 }
-	//Search question by searchText
+	
 			@ApiOperation(value="Search the questions using devops as the key",notes="This API endpoint is used for Searching")
 		    @GetMapping(value="/question/search/{searchText}",produces= {MediaType.APPLICATION_JSON_VALUE,MediaType.APPLICATION_XML_VALUE})
 		    public ResponseEntity<List<ForumDto>> findByText(@PathVariable("searchText")String search) {        
 				List<ForumDto> searchItem=forumService.findByText(search);
 		        return new ResponseEntity<>(searchItem,HttpStatus.OK);
 			}
+    
 	
 }

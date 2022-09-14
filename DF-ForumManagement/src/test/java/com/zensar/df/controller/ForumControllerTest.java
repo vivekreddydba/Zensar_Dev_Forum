@@ -2,6 +2,7 @@ package com.zensar.df.controller;
 
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.junit.Assert.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -27,6 +28,8 @@ import com.zensar.df.dto.CategoryDto;
 import com.zensar.df.dto.ForumDto;
 //import com.zensar.df.entity.ForumEntity;
 import com.zensar.df.service.ForumService;
+import com.zensar.df.service.UserServiceDelegate;
+import com.zensar.df.utils.JwtUtils;
 
 @WebMvcTest(ForumController.class)
 public class ForumControllerTest {
@@ -37,12 +40,17 @@ public class ForumControllerTest {
 	@MockBean
 	ForumService forumservice;
 	@MockBean
+	UserServiceDelegate userServiceDelegate;
+	@MockBean
+	JwtUtils jwtUtils;
+	@MockBean
 	ForumDto forumDto;
 	
 	@Test
 	public void DeletebyQuestionId() throws Exception{
 		HttpHeaders httpHeaders=new HttpHeaders();
 		httpHeaders.set("Authorization", "A1B2C3");
+		when(this.userServiceDelegate.isLoggedInUser(any())).thenReturn(true);
 		when(this.forumservice.deleteQuestionbyId(3,"A1B2C3")).thenReturn(true);
 		MvcResult mvcResult = this.mockmvc.perform(delete("http://localhost:8001/devforum/question/3")
 				        .headers(httpHeaders))
@@ -56,6 +64,7 @@ public class ForumControllerTest {
 	public void DeletebyInvalidQuestionId() throws Exception{
 		HttpHeaders httpHeaders=new HttpHeaders();
 		httpHeaders.set("Authorization", "A1B2C3");
+		when(this.userServiceDelegate.isLoggedInUser(any())).thenReturn(true);
 		when(this.forumservice.deleteQuestionbyId(-1,"A1B2C3")).thenReturn(false);
 		MvcResult mvcResult = this.mockmvc.perform(delete("http://localhost:8001/devforum/question/-1")
 				        .headers(httpHeaders))
@@ -64,25 +73,7 @@ public class ForumControllerTest {
 		String response=mvcResult.getResponse().getContentAsString();
 		assertEquals("false".equals(response), true);
 	}
-/*	@Test
-	public void testUpdateQuestion() throws Exception{
-		ForumDto question=new ForumDto();
-		question.setQuestion("Docker");
-        HttpHeaders httpHeaders=new HttpHeaders();
-		httpHeaders.set("Authorization", "A1B2C3");
-		question.setQuestionId(3);
-		when(this.forumservice.updateQuestion(question.getQuestionId(), question, "A1B2C3")).thenReturn(question);
-		MvcResult mvcResult = this.mockmvc.perform(put("http://localhost:8001/devforum/question/3")
-				.contentType("application/json")
-				.content(objectMapper.writeValueAsString(question))
-				.headers(httpHeaders)
-				).andExpect(status().isOk())
-				.andExpect(content().string(containsString("Docker")))
-				.andReturn();
-		        String response = mvcResult.getResponse().getContentAsString();
-		        assertEquals(response.contains("Docker"), true);
-		 
-	}*/
+
 	@Test
 	public void testUpdateQuestion() throws Exception{
 		ForumDto f=new ForumDto();
@@ -90,6 +81,7 @@ public class ForumControllerTest {
         HttpHeaders httpHeaders=new HttpHeaders();
 		httpHeaders.set("Authorization", "A1B2C3");
 		//category.setId(3);
+		when(this.userServiceDelegate.isLoggedInUser(any())).thenReturn(true);
 		when(this.forumservice.updateQuestion(3, f, "A1B2C3")).thenReturn(f);
 		MvcResult mvcResult = this.mockmvc.perform(put("http://localhost:8001/devforum/question/3")
 				.contentType("application/json")
@@ -108,6 +100,7 @@ public class ForumControllerTest {
 		HttpHeaders httpHeaders=new HttpHeaders();
 		httpHeaders.set("Authorization", "A1B2C3");
 		question.setQuestionId(3);
+		when(this.userServiceDelegate.isLoggedInUser(any())).thenReturn(true);
 		when(this.forumservice.updateQuestion (question.getQuestionId(), question, "A1B2C3")).thenReturn(question);
 		MvcResult mvcResult = this.mockmvc.perform(put("http://localhost:8001/devforum/question/3")
 				.contentType("application/json")
@@ -117,7 +110,6 @@ public class ForumControllerTest {
 				.andReturn();
 		        
 	}
-	
 	@Test
 	public void postNewQuestionTest() throws Exception{
 		ForumDto forum = new ForumDto();
@@ -125,6 +117,7 @@ public class ForumControllerTest {
 		forum.setCategoryid(2);
 		HttpHeaders httpHeaders = new HttpHeaders();
 		httpHeaders.set("Authorization", "YD69425");
+		when(this.userServiceDelegate.isLoggedInUser(any())).thenReturn(true);
 		when(this.forumservice.postNewQuestion(forum, "YD69425")).thenReturn(forum);
 		MvcResult mvcResult = this.mockmvc.perform(post("http://localhost:8001/devforum/question/")
 				.contentType("application/json")
@@ -145,6 +138,7 @@ public class ForumControllerTest {
 		forum.setCategoryid(2);
 		HttpHeaders httpHeaders = new HttpHeaders();
 		httpHeaders.set("Authorization", "YD69425");
+		when(this.userServiceDelegate.isLoggedInUser(any())).thenReturn(true);
 		when(this.forumservice.postNewQuestion(forum, "YD69425")).thenReturn(forum);
 		MvcResult mvcResult = this.mockmvc.perform(post("http://localhost:8001/devforum/question/")
 				.contentType("application/json")
@@ -180,29 +174,27 @@ public class ForumControllerTest {
 				.andReturn();
 	}
 	
-	//Test cases for SearchText
-		@Test
-	    public void addSearchTestVaild() throws Exception   {
-	        List<ForumDto> searchText=new ArrayList<>();
-	        searchText.add(new ForumDto());
-	        when(this.forumservice.findByText("is")).thenReturn(searchText);
-	        MvcResult mvcResult = this.mockmvc.perform(get("http://localhost:8001/devforum/question/search/is")
-	        		.contentType("application/json"))
-	        		.andExpect(status().isOk())
-	                .andReturn();      
-	    }
-		
-		@Test
-	    public void addSearchTestvaildForJacoco() throws Exception   {
-	        List<ForumDto> searchText=new ArrayList<>();
-	        
-	        searchText.add(new ForumDto());
-	        when(this.forumservice.findByText("jacoco")).thenReturn(searchText);
-	        MvcResult mvcResult = this.mockmvc.perform(get("http://localhost:8001/devforum/question/search/jacoco")
-	        		.contentType("application/json"))
-	                .andExpect(status().isOk())
-	                .andReturn();
-		}	
-		
+			@Test
+		    public void addSearchTestVaild() throws Exception   {
+		        List<ForumDto> searchText=new ArrayList<>();
+		        searchText.add(new ForumDto());
+		        when(this.forumservice.findByText("is")).thenReturn(searchText);
+		        MvcResult mvcResult = this.mockmvc.perform(get("http://localhost:8001/devforum/question/search/is")
+		        		.contentType("application/json"))
+		        		.andExpect(status().isOk())
+		                .andReturn();      
+		    }
+			
+			@Test
+		    public void addSearchTestvaildForJacoco() throws Exception   {
+		        List<ForumDto> searchText=new ArrayList<>();
+		        
+		        searchText.add(new ForumDto());
+		        when(this.forumservice.findByText("jacoco")).thenReturn(searchText);
+		        MvcResult mvcResult = this.mockmvc.perform(get("http://localhost:8001/devforum/question/search/jacoco")
+		        		.contentType("application/json"))
+		                .andExpect(status().isOk())
+		                .andReturn();
+			}	
 }
 
