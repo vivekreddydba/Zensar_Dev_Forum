@@ -140,6 +140,10 @@
 <rules>
 <rule>
 <element>PACKAGE</element>
+ <excludes>
+<exclude>com.zensar.df.utils</exclude>
+<exclude>com.zensar.df.exception</exclude>
+</excludes>    
 <limits>
 <limit>
 <counter>LINE</counter>
