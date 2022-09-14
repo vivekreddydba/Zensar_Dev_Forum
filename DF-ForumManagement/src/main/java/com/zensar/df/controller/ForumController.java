@@ -2,7 +2,6 @@ package com.zensar.df.controller;
 
 import java.io.IOException;
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -75,6 +74,12 @@ public class ForumController {
 		}
 		return forumService.getAllQuestionsByCategoryId(id);
 }
-    
+	//Search question by searchText
+		@ApiOperation(value="Search the questions using devops as the key",notes="This API endpoint is used for Searching")
+	    @GetMapping(value="/question/search/{searchText}",produces= {MediaType.APPLICATION_JSON_VALUE,MediaType.APPLICATION_XML_VALUE})
+	    public ResponseEntity<List<ForumDto>> findByText(@PathVariable("searchText")String search) {        
+			List<ForumDto> searchItem=forumService.findByText(search);
+	        return new ResponseEntity<>(searchItem,HttpStatus.OK);
+		}
 	
 }

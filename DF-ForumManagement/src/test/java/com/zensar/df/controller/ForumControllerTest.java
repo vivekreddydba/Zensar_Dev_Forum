@@ -179,5 +179,30 @@ public class ForumControllerTest {
 				.andExpect(status().isBadRequest())
 				.andReturn();
 	}
+	
+	//Test cases for SearchText
+		@Test
+	    public void addSearchTestVaild() throws Exception   {
+	        List<ForumDto> searchText=new ArrayList<>();
+	        searchText.add(new ForumDto());
+	        when(this.forumservice.findByText("is")).thenReturn(searchText);
+	        MvcResult mvcResult = this.mockmvc.perform(get("http://localhost:8001/devforum/question/search/is")
+	        		.contentType("application/json"))
+	        		.andExpect(status().isOk())
+	                .andReturn();      
+	    }
+		
+		@Test
+	    public void addSearchTestvaildForJacoco() throws Exception   {
+	        List<ForumDto> searchText=new ArrayList<>();
+	        
+	        searchText.add(new ForumDto());
+	        when(this.forumservice.findByText("jacoco")).thenReturn(searchText);
+	        MvcResult mvcResult = this.mockmvc.perform(get("http://localhost:8001/devforum/question/search/jacoco")
+	        		.contentType("application/json"))
+	                .andExpect(status().isOk())
+	                .andReturn();
+		}	
+		
 }
 

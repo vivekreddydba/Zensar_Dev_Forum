@@ -10,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import javax.persistence.Table;
 
 import org.springframework.stereotype.Component;
@@ -82,6 +83,10 @@ public class ForumEntity {
 	}
 	public void setAnswers(String answers) {
 		this.answers = answers;
+	}
+	public boolean getStatus() {
+		return status;
+		
 	}
 	@Override
 	public String toString() {

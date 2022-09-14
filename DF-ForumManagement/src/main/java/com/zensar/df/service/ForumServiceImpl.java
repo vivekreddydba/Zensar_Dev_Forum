@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.http.ResponseEntity;
 
 import com.zensar.df.dto.CategoryDto;
 import com.zensar.df.dto.ForumDto;
@@ -34,8 +35,7 @@ public class ForumServiceImpl implements ForumService{
     @Autowired
     ForumEntity forumEntity;
     
-    @Autowired
-    ForumRepo forumrepo;
+    
     @Autowired
     CategoryEntity categoryEntity;
     
@@ -67,8 +67,8 @@ public class ForumServiceImpl implements ForumService{
 			throw new InvalidAuthorizationTokenException(auth);
        }
 		
-		if(forumrepo.existsById(questionId)) {
-			forumrepo.deleteById(questionId);
+		if(forumRepo.existsById(questionId)) {
+			forumRepo.deleteById(questionId);
 		    return true;
 		}
 		return false;
@@ -120,8 +120,21 @@ public class ForumServiceImpl implements ForumService{
 		throw new InvalidCategoryIdException("Category Id Not Found"+categoryid);
 	}
 	public void setForumRepo(ForumRepo forumRepo) {
-		this.forumrepo = forumRepo;
+		this.forumRepo = forumRepo;
 	}
+	
+	//Search question by searchText
+		@Override
+	    public List<ForumDto> findByText(String search) {
+	        
+	        List<ForumEntity> entity = forumRepo.findByText(search);
+	        List<ForumDto> forumDtoList = new ArrayList<>();
+	        for(ForumEntity forumEntity:entity) {
+	        	ForumDto forum = new ForumDto(forumEntity.getQuestionid(),forumEntity.getQuestion(),forumEntity.getStatus(),forumEntity.getAnswers(),forumEntity.getCategory().getId());
+	        	forumDtoList.add(forum);
+	        }
+	        return forumDtoList;
+	    }
 	}
 
 
