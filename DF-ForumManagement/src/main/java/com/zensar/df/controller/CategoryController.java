@@ -49,9 +49,6 @@ public class CategoryController {
 	@GetMapping(value="/category/{id}",produces= {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
 	@ApiOperation(value="Gets category by ID", notes="This request returns specified category with id passed and present in database")
 	public CategoryDto getAllCategoriesById(@ApiParam(value="Category ID",required=true)  @PathVariable("id") Long id){
-		
-		
-		
 		return categoryService.getAllCategoriesById(id);
 	}
 	

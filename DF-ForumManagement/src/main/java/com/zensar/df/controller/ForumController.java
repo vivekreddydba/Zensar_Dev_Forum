@@ -2,6 +2,7 @@ package com.zensar.df.controller;
 
 import java.io.IOException;
 import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -19,9 +20,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 //import com.zensar.df.dto.CategoryDto;
 import com.zensar.df.dto.ForumDto;
+import com.zensar.df.exception.InvalidAuthorizationTokenException;
 import com.zensar.df.exception.InvalidCategoryIdException;
 //import com.zensar.df.service.CategoryService;
 import com.zensar.df.service.ForumService;
+import com.zensar.df.service.UserServiceDelegate;
+import com.zensar.df.utils.JwtUtils;
 
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -36,6 +40,10 @@ public class ForumController {
 	//private CategoryDto categoryDto;
     @Autowired
     ForumDto forumDto;
+    @Autowired
+    UserServiceDelegate userServiceDelegate;
+    @Autowired
+    JwtUtils jwtutils;
 	@PostMapping(value="/question", consumes=MediaType.APPLICATION_JSON_VALUE, produces=MediaType.APPLICATION_JSON_VALUE)
 	@ApiOperation(value="New question", notes="This request creates new question which is posted by user")
 	public ResponseEntity<ForumDto> postNewQuestion(@RequestBody ForumDto forumDto, @RequestHeader("Authorization") String authToken) throws IOException {
@@ -74,12 +82,20 @@ public class ForumController {
 		}
 		return forumService.getAllQuestionsByCategoryId(id);
 }
+	@GetMapping(value="/question",produces= {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
+	@ApiOperation(value="Get All Questions by logged in user", notes="This request returns all questions posted by present logged in user")
+	public List<ForumDto> getAllQuestionsByUser(@RequestHeader("Authorization") String authToken){
+        if(!userServiceDelegate.isLoggedInUser(authToken)) {         
+            throw new InvalidAuthorizationTokenException(authToken);
+        }
+		return forumService.getAllQuestionsByUser(authToken);
+}
 	//Search question by searchText
-		@ApiOperation(value="Search the questions using devops as the key",notes="This API endpoint is used for Searching")
-	    @GetMapping(value="/question/search/{searchText}",produces= {MediaType.APPLICATION_JSON_VALUE,MediaType.APPLICATION_XML_VALUE})
-	    public ResponseEntity<List<ForumDto>> findByText(@PathVariable("searchText")String search) {        
-			List<ForumDto> searchItem=forumService.findByText(search);
-	        return new ResponseEntity<>(searchItem,HttpStatus.OK);
-		}
+			@ApiOperation(value="Search the questions using devops as the key",notes="This API endpoint is used for Searching")
+		    @GetMapping(value="/question/search/{searchText}",produces= {MediaType.APPLICATION_JSON_VALUE,MediaType.APPLICATION_XML_VALUE})
+		    public ResponseEntity<List<ForumDto>> findByText(@PathVariable("searchText")String search) {        
+				List<ForumDto> searchItem=forumService.findByText(search);
+		        return new ResponseEntity<>(searchItem,HttpStatus.OK);
+			}
 	
 }

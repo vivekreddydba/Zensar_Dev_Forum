@@ -10,9 +10,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import javax.persistence.Table;
-
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.springframework.stereotype.Component;
 @Component
 @Entity
@@ -28,7 +27,15 @@ public class ForumEntity {
 	private boolean status;
 	@Column(name = "answers")
 	private String answers;
+	@Column(name = "username")
+	private String username;
 	
+	public String getUsername() {
+		return username;
+	}
+	public void setUsername(String username) {
+		this.username = username;
+	}
 	@ManyToOne(cascade=CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinColumn(name="category_id")
 	private CategoryEntity category;
@@ -78,21 +85,29 @@ public class ForumEntity {
 	public void setStatus(boolean status) {
 		this.status = status;
 	}
+	public boolean getStatus() {
+		return status;
+	}
 	public String getAnswers() {
 		return answers;
 	}
 	public void setAnswers(String answers) {
 		this.answers = answers;
 	}
-	public boolean getStatus() {
-		return status;
-		
-	}
 	@Override
 	public String toString() {
 		return "ForumEntity [questionid=" + questionid + ", question=" + question + ", status=" + status + ", answers="
-				+ answers + ", category=" + category + "]";
+				+ answers + ", username=" + username + ", category=" + category + "]";
 	}
-	
-	
+	public ForumEntity(long questionid, String question, boolean status, String answers, String username,
+			CategoryEntity category) {
+		super();
+		this.questionid = questionid;
+		this.question = question;
+		this.status = status;
+		this.answers = answers;
+		this.username = username;
+		this.category = category;
+	}
+
 }

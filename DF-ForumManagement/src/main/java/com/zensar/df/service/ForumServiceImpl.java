@@ -7,7 +7,6 @@ import java.util.stream.Collectors;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.http.ResponseEntity;
 
 import com.zensar.df.dto.CategoryDto;
 import com.zensar.df.dto.ForumDto;
@@ -19,6 +18,7 @@ import com.zensar.df.exception.InvalidQuestionIdException;
 import com.zensar.df.exception.InvalidRoleException;
 import com.zensar.df.repo.CategoryRepo;
 import com.zensar.df.repo.ForumRepo;
+import com.zensar.df.utils.JwtUtils;
 
 @Service
 public class ForumServiceImpl implements ForumService{
@@ -34,8 +34,10 @@ public class ForumServiceImpl implements ForumService{
     ForumDto forumDto;
     @Autowired
     ForumEntity forumEntity;
-    
-    
+    @Autowired
+    JwtUtils jwtutils;
+    @Autowired
+    ForumRepo forumrepo;
     @Autowired
     CategoryEntity categoryEntity;
     
@@ -53,6 +55,9 @@ public class ForumServiceImpl implements ForumService{
 		CategoryEntity categoryEntity = categoryRepo.getById(forumDto.getCategoryid());
 		forumEntity.setCategory(categoryEntity);
 		forumEntity.setStatus(true);
+		String authToken1 = authToken.substring(7, authToken.length());
+		String username = jwtutils.extractUsername(authToken1);
+		forumEntity.setUsername(username);
 		forumEntity = forumRepo.save(forumEntity);
 		forumDto = mapper.map(forumEntity,ForumDto.class);
 		forumDto.setCategoryid(forumEntity.getCategory().getId());
@@ -67,8 +72,8 @@ public class ForumServiceImpl implements ForumService{
 			throw new InvalidAuthorizationTokenException(auth);
        }
 		
-		if(forumRepo.existsById(questionId)) {
-			forumRepo.deleteById(questionId);
+		if(forumrepo.existsById(questionId)) {
+			forumrepo.deleteById(questionId);
 		    return true;
 		}
 		return false;
@@ -120,23 +125,33 @@ public class ForumServiceImpl implements ForumService{
 		throw new InvalidCategoryIdException("Category Id Not Found"+categoryid);
 	}
 	public void setForumRepo(ForumRepo forumRepo) {
-		this.forumRepo = forumRepo;
+		this.forumrepo = forumRepo;
 	}
-	
+
+	@Override
+	public List<ForumDto> getAllQuestionsByUser(String authToken) {
+		String authToken1 = authToken.substring(7, authToken.length());
+		String username = jwtutils.extractUsername(authToken1);
+		List<ForumEntity> forumEntityUsers = forumRepo.findByusername(username);
+		List<ForumDto> forumDtoList = new ArrayList<>();
+		for(ForumEntity forumEntity: forumEntityUsers) {
+			forumEntity.setStatus(true);
+			ForumDto forum = 
+					new ForumDto(forumEntity.getQuestionid(),forumEntity.getQuestion(),forumEntity.isStatus(),forumEntity.getAnswers(),forumEntity.getCategory().getId(),forumEntity.getUsername());
+			forumDtoList.add(forum);
+		}
+		return forumDtoList;
+	}
 	//Search question by searchText
-		@Override
-	    public List<ForumDto> findByText(String search) {
-	        
-	        List<ForumEntity> entity = forumRepo.findByText(search);
-	        List<ForumDto> forumDtoList = new ArrayList<>();
-	        for(ForumEntity forumEntity:entity) {
-	        	ForumDto forum = new ForumDto(forumEntity.getQuestionid(),forumEntity.getQuestion(),forumEntity.getStatus(),forumEntity.getAnswers(),forumEntity.getCategory().getId());
-	        	forumDtoList.add(forum);
-	        }
-	        return forumDtoList;
-	    }
-	}
-
-
-
-
+			@Override
+		    public List<ForumDto> findByText(String search) {
+		        
+		        List<ForumEntity> entity = forumRepo.findByText(search);
+		        List<ForumDto> forumDtoList = new ArrayList<>();
+		        for(ForumEntity forumEntity:entity) {
+		        	ForumDto forum = new ForumDto(forumEntity.getQuestionid(),forumEntity.getQuestion(),forumEntity.getStatus(),forumEntity.getAnswers(),forumEntity.getCategory().getId());
+		        	forumDtoList.add(forum);
+		        }
+		        return forumDtoList;
+		    }
+}

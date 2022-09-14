@@ -18,8 +18,15 @@ public class ForumDto {
 	private String answers;
 	@ApiModelProperty(value="Category ID")
 	private long categoryid;
+	@ApiModelProperty(value="User name")
+	private String username;
 	
-	
+	public String getUsername() {
+		return username;
+	}
+	public void setUsername(String username) {
+		this.username = username;
+	}
 	public long getQuestionId() {
 		return questionId;
 	}
@@ -72,10 +79,22 @@ public class ForumDto {
 		this.questionId = questionId;
 		this.question = question;
 	}
+
+
+	public ForumDto(long questionId, String question, boolean status, String answers, long categoryid,
+			String username) {
+		super();
+		this.questionId = questionId;
+		this.question = question;
+		this.status = status;
+		this.answers = answers;
+		this.categoryid = categoryid;
+		this.username = username;
+	}
 	@Override
 	public String toString() {
 		return "ForumDto [questionId=" + questionId + ", question=" + question + ", status=" + status + ", answers="
-				+ answers + ", categoryid=" + categoryid + "]";
+				+ answers + ", categoryid=" + categoryid + ", username=" + username + "]";
 	}
 	@Override
 	public boolean equals(Object obj) {
