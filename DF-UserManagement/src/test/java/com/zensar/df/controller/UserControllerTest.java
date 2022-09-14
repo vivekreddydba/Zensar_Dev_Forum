@@ -39,7 +39,7 @@ public class UserControllerTest {
 	
 	@MockBean
 	UserService userService;
-	
+		
 	@MockBean
 	UserDetailsService userDetailsService;
 	
@@ -60,7 +60,7 @@ public class UserControllerTest {
 		user.setPassword("anand123");
 		user.setEmail("anand@gmail.com");
 		user.setPhone("9999999999");
-		user.setRole("ROLE_ADMIN");
+		user.setRole("ROLE_USER");
 		when(this.userService.registerUser(user)).thenReturn(user);
 		MvcResult mvcResult = this.mockMvc.perform(post("http://localhost:8000/devforum/user/")
 				.contentType("application/json")
@@ -81,7 +81,7 @@ public class UserControllerTest {
 		user.setPassword("anand123");
 		user.setEmail("anand@gmail.com");
 		user.setPhone("9999999999");
-		user.setRole("ROLE_ADMIN");
+		user.setRole("ROLE_USER");
 		when(this.userService.registerUser(user)).thenReturn(user);
 		MvcResult mvcResult = this.mockMvc.perform(post("http://localhost:8000/devforum/user/")
 				.contentType("application/json")
@@ -99,7 +99,7 @@ public class UserControllerTest {
 		user.setPassword("anand123");
 		user.setEmail("anand@gmail.com");
 		user.setPhone("");
-		user.setRole("ROLE_ADMIN");
+		user.setRole("ROLE_USER");
 		when(this.userService.registerUser(user)).thenReturn(user);
 		MvcResult mvcResult = this.mockMvc.perform(post("http://localhost:8000/devforum/user/")
 				.contentType("application/json")
@@ -139,6 +139,23 @@ public class UserControllerTest {
 		String response = mvcResult.getResponse().getContentAsString();
 		assertEquals(response.equals("true"),true);
 	}
+	
+	@Test
+	public void testlogoutuser1() throws Exception {
+		
+		HttpHeaders httpHeaders = new HttpHeaders();
+		httpHeaders.set("Authorization", "A1B2C16");
+		when(this.jwtUtils.extractUsername(any())).thenReturn(null);
+		when(this.jwtUtils.validateToken(any(), any())).thenReturn(true);
+		when(this.userDetailsService.loadUserByUsername(any())).thenReturn(null);
+		when(this.userService.logoutUser("A1B2C16S")).thenReturn(false);
+		MvcResult mvcResult = this.mockMvc.perform(delete("http://localhost:8000/devforum/user/logout")
+				.headers(httpHeaders))
+				.andExpect(status().isOk())
+				.andReturn();
+		String response = mvcResult.getResponse().getContentAsString();
+		assertEquals(response.equals("true"),true);
+	}
     
 	@Test
     public void testGetUserInfoSuccess() throws Exception {
@@ -162,7 +179,7 @@ public class UserControllerTest {
 	    HttpHeaders httpHeaders = new HttpHeaders();
 	    httpHeaders.set("Authorization", "Bearer A54BG");
 	    List<UserDto> user =new ArrayList<>();
-	    user.add(new UserDto(1, null, " kulkarni","anand", "anand123", "anand@123", "12344555", "ADMIN"));
+	    user.add(new UserDto(1, null, " kulkarni","anand", "anand123", "anand@123", "12344555", "ROLE_USER"));
 	    when(this.jwtUtils.extractUsername("A54BG")).thenReturn(null);
 	    when(this.userService.findUserByUsername(any())).thenReturn(user);
 	    when(this.jwtUtils.validateToken(any(),any())).thenReturn(false); 
@@ -170,6 +187,21 @@ public class UserControllerTest {
 	            .headers(httpHeaders))
 	            .andExpect(status().isBadRequest())
 	            .andReturn();
-		    }  
+    }
+	
+	@Test
+	public void testGetUserInfoBlankEmail() throws Exception {
+	    HttpHeaders httpHeaders = new HttpHeaders();
+	    httpHeaders.set("Authorization", "Bearer A54BG");
+	    List<UserDto> user =new ArrayList<>();
+	    user.add(new UserDto(1, "anand", " kulkarni","anand", "anand123", null, "12344555", "ROLE_USER"));
+	    when(this.jwtUtils.extractUsername("A54BG")).thenReturn(null);
+	    when(this.userService.findUserByUsername(any())).thenReturn(user);
+	    when(this.jwtUtils.validateToken(any(),any())).thenReturn(false); 
+	    MvcResult mvcResult = this.mockMvc.perform(get("http://localhost:8000/devforum/user")
+	            .headers(httpHeaders))
+	            .andExpect(status().isBadRequest())
+	            .andReturn();
+    }
 	
 }

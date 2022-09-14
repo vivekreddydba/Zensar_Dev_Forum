@@ -1,5 +1,7 @@
 package com.zensar.df.dto;
 
+import java.util.List;
+
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
@@ -7,7 +9,7 @@ import javax.validation.constraints.Size;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 @ApiModel(value="User model has information about user")
-public class UserDto {
+public class UserDto  {
 	@ApiModelProperty(value="User ID")
 	private int id;
 	@NotEmpty

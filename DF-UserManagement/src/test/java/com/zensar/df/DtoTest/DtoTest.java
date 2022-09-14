@@ -1,6 +1,8 @@
 package com.zensar.df.DtoTest;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -33,12 +35,6 @@ public class DtoTest {
 		user.setEmail("anand@gmail.com");
 		user.setPhone("9999999999");
 		user.setRole("ROLE_ADMIN");
-		//when(this.userDto.getFirstname()).thenReturn(user.getFirstname());
-//		MvcResult mvcResult = this.mockMvc.perform()
-//				.contentType("application/json")
-//				.content(objectMapper.writeValueAsString(user))
-//				).andExpect(status().isBadRequest())
-//				.andReturn();
 		assertEquals(user.getFirstname(),"anand");
 	}
 	
@@ -52,6 +48,31 @@ public class DtoTest {
 		assertEquals(user.getPassword(),"anand123");
 		//assertEquals(user.getPhone(),"ROLE_ADMIN");
 		
+	}
+	
+	@Test
+	public void testGetParameteriseArguments() throws Exception{
+		UserDto user =  new UserDto(1,"bindu","madhavi","bindu","bindu23","bindu@gmail.com","9999999999","ROLE_USER");
+		assertEquals(user.getFirstname(),"bindu");
+		assertEquals(user.getLastname(),"madhavi");
+		assertEquals(user.getUsername(),"bindu");
+		assertEquals(user.getPassword(),"bindu23");
+		
+	}
+	
+	@Test
+	public void testUserDtoEquals() throws Exception{
+		UserDto user1=new UserDto("Bindu","Madhavi","bindu","bindu123","bindu@gmail.com","9999999999","ROLE_USER");
+		UserDto user2=new UserDto("Bindu","Madhavi","bindu","bindu123","bindu@gmail.com","9999999999","ROLE_USER");
+		assertTrue(user1.equals(user2));
+		
+	}
+	
+	@Test
+	public void testUserDtoEquals2() throws Exception{
+		UserDto user1=new UserDto("Bindu","Madhavi","bindu","bindu123","bindu@gmail.com","9999999999","ROLE_USER");
+		UserDto user2=new UserDto("Anand","Kulkarni","anand","anand123","anand@gmail.com","9999999999","ROLE_ADMIn");
+		assertFalse(user1.equals(user2));
 	}
 	
 

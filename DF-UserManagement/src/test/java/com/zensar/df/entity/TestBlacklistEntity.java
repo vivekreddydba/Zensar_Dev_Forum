@@ -12,7 +12,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.test.web.servlet.MockMvc;
 
 @WebMvcTest(BlackListEntity.class)
-public class testBlacklistEntity {
+public class TestBlacklistEntity {
 	@Autowired
 	MockMvc mockMvc;
 	
@@ -33,7 +33,15 @@ public class testBlacklistEntity {
 		blist.setCreateddate(LocalDate.now());
 		blist.setToken("A1B2C3");
 		blist.setId(1);
-		assertEquals(blist.getToken(), "A1B2C3");
+		assertEquals("A1B2C3", blist.getToken());
+	}
+	
+	@Test
+	public void testBlackListEntityParameterized() throws Exception{
+		BlackListEntity blist=new BlackListEntity(1,"A1B2C3",LocalDate.now());
+		assertEquals(blist.getCreateddate(),LocalDate.now());
+		assertEquals("A1B2C3", blist.getToken());
+		assertEquals(1,blist.getId());
 	}
 
 }

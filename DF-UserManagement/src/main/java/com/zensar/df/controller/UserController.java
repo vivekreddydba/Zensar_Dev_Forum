@@ -79,7 +79,8 @@ public class UserController {
 				return new ResponseEntity<Boolean>(false, HttpStatus.BAD_REQUEST);
 			}
 			return new ResponseEntity<Boolean>(true, HttpStatus.OK);
-		}else {
+		}
+		else {
 			return new ResponseEntity<Boolean>(false, HttpStatus.BAD_REQUEST);
 		}
 	}
@@ -90,7 +91,7 @@ public class UserController {
 	@PostMapping(value = "/user", consumes= {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE},produces= {MediaType.APPLICATION_JSON_VALUE,MediaType.APPLICATION_XML_VALUE})
 	@ApiOperation(value="Registration of a user", notes="This request saves the details of user in the database")
 	public ResponseEntity<UserDto> registerUser(@Valid @RequestBody UserDto userdto) {
-		if(!"".equals(userdto.getFirstname()) || !"".equals(userdto.getUsername())) {
+		if(!"ROLE_ADMIN".equals(userdto.getRole())) {
 		    UserDto user=userService.registerUser(userdto);
 		    return new ResponseEntity<UserDto>(user,HttpStatus.OK);
 		}

@@ -66,9 +66,10 @@ public class LoginControllerTest {
 
 
          String token = mvcResult.getResponse().getContentAsString();
-          assertEquals(token.length()>0, true);
+         assertEquals(token.length()>0, true);
           
       }
+      
 }
                
             

@@ -11,7 +11,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 
 @WebMvcTest(UserEntity.class)
-class testUserEntity {
+public class TestUserEntity {
 	@Autowired
 	MockMvc mockMvc;
 	
@@ -59,6 +59,19 @@ class testUserEntity {
 	@Test
 	public void testGetParameterisedArguments() throws Exception{
 		UserEntity user =  new UserEntity("anand","kulkarni","anand","anand123","anand@gmail.com","9999999999","ROLE_ADMIN");
+		assertEquals("anand",user.getFirstname());
+		assertEquals("kulkarni",user.getLastname());
+		assertEquals("anand",user.getUsername());
+		assertEquals("9999999999",user.getPhone());
+		assertEquals("anand123",user.getPassword());
+		assertEquals("ROLE_ADMIN",user.getRole());
+		
+	}
+	
+	@Test
+	public void testGetParameteriseArguments() throws Exception{
+		UserEntity user =  new UserEntity(1,"anand","kulkarni","anand","anand123","anand@gmail.com","9999999999","ROLE_ADMIN");
+		assertEquals(1,user.getId());
 		assertEquals("anand",user.getFirstname());
 		assertEquals("kulkarni",user.getLastname());
 		assertEquals("anand",user.getUsername());
