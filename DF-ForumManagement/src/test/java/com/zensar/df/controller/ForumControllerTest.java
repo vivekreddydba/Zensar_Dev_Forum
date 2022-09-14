@@ -195,6 +195,40 @@ public class ForumControllerTest {
 		        		.contentType("application/json"))
 		                .andExpect(status().isOk())
 		                .andReturn();
-			}	
+			}
+			@Test
+			public void testGetAllQuestions() throws Exception {
+				List<ForumDto> forumDtoList = new ArrayList<ForumDto>();
+				forumDtoList.add(new ForumDto(37,"What?",true,"null",4,"yogi"));
+				HttpHeaders httpHeaders = new HttpHeaders();
+				httpHeaders.set("Authorization", "YD69425");
+				when(this.userServiceDelegate.isLoggedInUser(any())).thenReturn(true);
+				when(this.forumservice.getAllQuestionsByUser("YD69425")).
+				thenReturn(forumDtoList);
+				
+				MvcResult mvcResult = this.mockmvc.perform(get("http://localhost:8001/devforum/question")
+						.headers(httpHeaders))
+						.andExpect(status().isOk())
+						.andReturn();
+				String response = mvcResult.getResponse().getContentAsString();
+				assertEquals(response.contains("yogi"), true);
+			}
+			
+			@Test
+			public void testBlankGetAllQuestions() throws Exception {
+				List<ForumDto> forumDtoList = new ArrayList<ForumDto>();
+				HttpHeaders httpHeaders = new HttpHeaders();
+				httpHeaders.set("Authorization", "YD69425");
+				when(this.userServiceDelegate.isLoggedInUser(any())).thenReturn(true);
+				when(this.forumservice.getAllQuestionsByUser("YD69425")).
+				thenReturn(forumDtoList);
+				
+				MvcResult mvcResult = this.mockmvc.perform(get("http://localhost:8001/devforum/question")
+						.headers(httpHeaders))
+						.andExpect(status().isOk())
+						.andReturn();
+				String response = mvcResult.getResponse().getContentAsString();
+				assertEquals(response.contains("[]"),true);
+			}
 }
 

@@ -96,11 +96,11 @@ public class ForumController {
 }
 	@GetMapping(value="/question",produces= {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
 	@ApiOperation(value="Get All Questions by logged in user", notes="This request returns all questions posted by present logged in user")
-	public List<ForumDto> getAllQuestionsByUser(@RequestHeader("Authorization") String authToken){
+	public ResponseEntity<List<ForumDto>> getAllQuestionsByUser(@RequestHeader("Authorization") String authToken){
         if(!userServiceDelegate.isLoggedInUser(authToken)) {         
             throw new InvalidAuthorizationTokenException(authToken);
         }
-		return forumService.getAllQuestionsByUser(authToken);
+		return new ResponseEntity<>(forumService.getAllQuestionsByUser(authToken),HttpStatus.OK);
 }
 	
 			@ApiOperation(value="Search the questions using devops as the key",notes="This API endpoint is used for Searching")

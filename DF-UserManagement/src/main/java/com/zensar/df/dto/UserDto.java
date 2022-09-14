@@ -1,6 +1,7 @@
 package com.zensar.df.dto;
 
 import java.util.List;
+import java.util.Objects;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
@@ -126,11 +127,22 @@ public class UserDto  {
 	}
 
 	@Override
+	public int hashCode() {
+		return Objects.hash(email, firstname, id, lastname, password, phone, role, username);
+	}
+	@Override
 	public boolean equals(Object obj) {
-		UserDto userDto = (UserDto)obj;
-		if(this.firstname.equals(userDto.getFirstname()))
+		if (this == obj)
 			return true;
-		return false;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		UserDto other = (UserDto) obj;
+		return Objects.equals(email, other.email) && Objects.equals(firstname, other.firstname) && id == other.id
+				&& Objects.equals(lastname, other.lastname) && Objects.equals(password, other.password)
+				&& Objects.equals(phone, other.phone) && Objects.equals(role, other.role)
+				&& Objects.equals(username, other.username);
 	}
 
 }
