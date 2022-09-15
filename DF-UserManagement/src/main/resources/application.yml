@@ -6,6 +6,8 @@ spring.jpa:
  show-sql: true
 
 spring:
+   application:
+    name: USER-APP 
    mvc:
     pathmatch:
      matching-strategy: ant-path-matcher

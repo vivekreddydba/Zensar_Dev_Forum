@@ -1,6 +1,5 @@
 package com.zensar.df.dto;
 
-import java.util.List;
 import java.util.Objects;
 
 import javax.validation.constraints.Email;
@@ -57,7 +56,6 @@ public class UserDto  {
 	}
 	public UserDto( String firstname, String lastname, String username, String password, String email, String phone, String role) {
 		super();
-		//this.id = id;
 		this.firstname = firstname;
 		this.lastname = lastname;
 		this.username = username;
