@@ -5,20 +5,22 @@ import java.util.Objects;
 
 import org.springframework.stereotype.Component;
 
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
+
+
 @Component
 public class ForumDto {
-	@ApiModelProperty(value="Question ID")
+	@Schema(description="Question ID")
 	private long questionId;
-	@ApiModelProperty(value="Question")
+	@Schema(description="Question")
 	private String question;
-	@ApiModelProperty(value="Question Status")
+	@Schema(description="Question Status")
 	private boolean status;
-	@ApiModelProperty(value="Answers")
+	@Schema(description="Answers")
 	private String answers;
-	@ApiModelProperty(value="Category ID")
+	@Schema(description="Category ID")
 	private long categoryid;
-	@ApiModelProperty(value="User name")
+	@Schema(description="User name")
 	private String username;
 	
 	public String getUsername() {

@@ -1,0 +1,22 @@
+server:
+   port: 9191
+
+
+
+spring:
+   application:
+      name: API-GATEWAY
+   cloud:
+    gateway:
+      routes:
+      - id: USER-APP
+        uri: lb://USER-APP
+        predicates:
+          - Path=/devforum/**
+      - id: FORUM-APP
+        uri: lb://FORUM-APP
+        predicates:
+          - Path=/devforum/**
+          
+   zipkin:
+    base-url: http://localhost:9411

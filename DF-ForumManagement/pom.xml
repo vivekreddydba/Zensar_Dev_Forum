@@ -70,12 +70,6 @@
 </dependency>
 
 <dependency>
-    <groupId>io.springfox</groupId>
-    <artifactId>springfox-swagger-ui</artifactId>
-    <version>3.0.0</version>
-</dependency>
-
-<dependency>
     <groupId>io.jsonwebtoken</groupId>
     <artifactId>jjwt</artifactId>
     <version>0.9.1</version>
@@ -86,7 +80,12 @@
     <artifactId>spring-security-core</artifactId>
     <version>5.7.3</version>
 </dependency>
- 
+<!--  
+<dependency>
+    <groupId>io.springfox</groupId>
+    <artifactId>springfox-swagger-ui</artifactId>
+    <version>3.0.0</version>
+</dependency>
 <dependency>
     <groupId>io.springfox</groupId>
     <artifactId>springfox-swagger2</artifactId>
@@ -97,6 +96,13 @@
     <artifactId>springfox-boot-starter</artifactId>
     <version>3.0.0</version>
 </dependency>
+-->
+<dependency>
+      <groupId>org.springdoc</groupId>
+      <artifactId>springdoc-openapi-ui</artifactId>
+      <version>1.6.11</version>
+   </dependency>
+
 <dependency>
 		    <groupId>com.fasterxml.jackson.dataformat</groupId>
 		    <artifactId>jackson-dataformat-xml</artifactId>
@@ -116,6 +122,26 @@
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
 		</dependency>
+		<dependency>
+      <groupId>org.springframework.cloud</groupId>
+      <artifactId>spring-cloud-sleuth-zipkin</artifactId>
+</dependency>
+<dependency>
+  <groupId>org.springframework.cloud</groupId>
+  <artifactId>spring-cloud-starter-sleuth</artifactId>
+</dependency>
+<dependency>
+    <groupId>io.github.resilience4j</groupId>
+    <artifactId>resilience4j-spring-boot2</artifactId>
+</dependency>
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-actuator</artifactId>
+</dependency>        
+<dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-aop</artifactId>
+        </dependency>
 	</dependencies>
 	
 	<dependencyManagement>

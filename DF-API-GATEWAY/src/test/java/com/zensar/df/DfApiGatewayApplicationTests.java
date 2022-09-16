@@ -4,7 +4,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class DfForumManagementApplicationTests {
+class DfApiGatewayApplicationTests {
 
-	
+	@Test
+	void contextLoads() {
+	}
+
 }

@@ -7,10 +7,10 @@ import javax.validation.constraints.Size;
 
 import org.springframework.stereotype.Component;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
 
-@ApiModel(value="Category model has information about category")
+import io.swagger.v3.oas.annotations.media.Schema;
+
+@Schema(description="Category model has information about category")
 @Component
 public class CategoryDto {
 	public CategoryDto(long id, String name) {
@@ -43,9 +43,9 @@ public class CategoryDto {
 	public String toString() {
 		return "CategoryDto [id=" + id + ", name=" + name + "]";
 	}
-	@ApiModelProperty(value="Category ID")
+	@Schema(description="Category ID")
 	private long id;
-	@ApiModelProperty(value="Category Name")
+	@Schema(description="Category Name")
 	@NotEmpty
 	private String name;
 	@Override

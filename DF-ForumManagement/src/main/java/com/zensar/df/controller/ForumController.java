@@ -27,8 +27,9 @@ import com.zensar.df.service.ForumService;
 import com.zensar.df.service.UserServiceDelegate;
 import com.zensar.df.utils.JwtUtils;
 
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
+
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 
 @RestController
 @CrossOrigin(origins="*")
@@ -45,7 +46,7 @@ public class ForumController {
     @Autowired
     ForumDto forumDto;
 	@PostMapping(value="/question", consumes=MediaType.APPLICATION_JSON_VALUE, produces=MediaType.APPLICATION_JSON_VALUE)
-	@ApiOperation(value="New question", notes="This request creates new question which is posted by user")
+	@Operation(summary="New question", description="This request creates new question which is posted by user")
 	public ResponseEntity<ForumDto> postNewQuestion(@RequestBody ForumDto forumDto, @RequestHeader("Authorization") String authToken) throws IOException {
 		if (!userServiceDelegate.isLoggedInUser(authToken)) {
 
@@ -59,7 +60,7 @@ public class ForumController {
 	}
 	
 	@DeleteMapping(value="/question/{id}")
-	@ApiOperation(value="New question", notes="This request deletes question by question id")
+	@Operation(summary="New question", description="This request deletes question by question id")
 	public ResponseEntity<Boolean> deletequestionbyid(@PathVariable("id") long questionId,@RequestHeader("Authorization")  String authToken){
 		 if(!userServiceDelegate.isLoggedInUser(authToken)) {
 				
@@ -73,7 +74,7 @@ public class ForumController {
 	}
 	
 	@PutMapping(value="/question/{id}", consumes={MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE}, produces={MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
-	@ApiOperation(value="Update question", notes="This request updates specified forum with name passed and present in database")
+	@Operation(summary="Update question", description="This request updates specified forum with name passed and present in database")
 	public ResponseEntity<ForumDto> updateQuestion(@RequestHeader("Authorization") String authToken, @PathVariable("id") Long id, @RequestBody ForumDto question){
         if(!userServiceDelegate.isLoggedInUser(authToken)) {
             
@@ -86,8 +87,8 @@ public class ForumController {
     }
 	
 	@GetMapping(value="/question/search/category/{id}",produces= {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
-	@ApiOperation(value="Get All Questions by ID", notes="This request returns all questions with id passed and present in database")
-	public List<ForumDto> getAllQuestionsById(@ApiParam(value="Categoryid",required=true)  @PathVariable("id") Long id){
+	@Operation(summary="Get All Questions by ID", description="This request returns all questions with id passed and present in database")
+	public List<ForumDto> getAllQuestionsById(@Parameter(description="Categoryid",required=true)  @PathVariable("id") Long id){
 		
 		if(id <=0 ) {
 			throw new InvalidCategoryIdException();
@@ -95,7 +96,7 @@ public class ForumController {
 		return forumService.getAllQuestionsByCategoryId(id);
 }
 	@GetMapping(value="/question",produces= {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
-	@ApiOperation(value="Get All Questions by logged in user", notes="This request returns all questions posted by present logged in user")
+	@Operation(summary="Get All Questions by logged in user", description="This request returns all questions posted by present logged in user")
 	public ResponseEntity<List<ForumDto>> getAllQuestionsByUser(@RequestHeader("Authorization") String authToken){
         if(!userServiceDelegate.isLoggedInUser(authToken)) {         
             throw new InvalidAuthorizationTokenException(authToken);
@@ -103,7 +104,7 @@ public class ForumController {
 		return new ResponseEntity<>(forumService.getAllQuestionsByUser(authToken),HttpStatus.OK);
 }
 	
-			@ApiOperation(value="Search the questions using devops as the key",notes="This API endpoint is used for Searching")
+			@Operation(summary="Search the questions using devops as the key",description="This API endpoint is used for Searching")
 		    @GetMapping(value="/question/search/{searchText}",produces= {MediaType.APPLICATION_JSON_VALUE,MediaType.APPLICATION_XML_VALUE})
 		    public ResponseEntity<List<ForumDto>> findByText(@PathVariable("searchText")String search) {        
 				List<ForumDto> searchItem=forumService.findByText(search);

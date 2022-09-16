@@ -148,6 +148,7 @@ public class ForumServiceImpl implements ForumService{
 	public void setCategoryRepo(CategoryRepo categoryRepo) {
 		this.categoryRepo = categoryRepo;
 	}
+	
 }
 
 

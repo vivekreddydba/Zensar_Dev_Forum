@@ -26,8 +26,10 @@ import com.zensar.df.exception.InvalidRoleException;
 import com.zensar.df.service.CategoryService;
 import com.zensar.df.service.UserServiceDelegate;
 
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+
+
 @RestController
 @CrossOrigin(origins="*")
 @RequestMapping(value="/devforum")
@@ -37,7 +39,7 @@ public class CategoryController {
 	@Autowired
 	UserServiceDelegate userServiceDelegate;
 	@PostMapping(value="/category", consumes={MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE}, produces={MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
-	@ApiOperation(value="New question category", notes="This request creates new question category")
+	@Operation(summary="New question category", description="This request creates new question category")
 	public ResponseEntity<CategoryDto> createNewCategory(@Valid @RequestBody CategoryDto categoryDto, @RequestHeader("Authorization") String authToken) throws IOException {
 		if (!userServiceDelegate.isLoggedInUser(authToken)) {
 
@@ -53,7 +55,7 @@ public class CategoryController {
 	} 
 	
 	@GetMapping(value="/category",produces= {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
-	@ApiOperation(value="Gets all categories", notes="This request returns all categories which are created in database")
+	@Operation(summary="Gets all categories", description="This request returns all categories which are created in database")
 	public List<CategoryDto> GetAllCategories(){
 		
 		return categoryService.GetAllCategories();
@@ -61,8 +63,8 @@ public class CategoryController {
 	}
 	
 	@GetMapping(value="/category/{id}",produces= {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
-	@ApiOperation(value="Gets category by ID", notes="This request returns specified category with id passed and present in database")
-	public CategoryDto getAllCategoriesById(@ApiParam(value="Category ID",required=true)  @PathVariable("id") Long id){
+	@Operation(summary="Gets category by ID", description="This request returns specified category with id passed and present in database")
+	public CategoryDto getAllCategoriesById(@Parameter(description="Category ID",required=true)  @PathVariable("id") Long id){
 		
 		
 		
@@ -70,7 +72,7 @@ public class CategoryController {
 	}
 	
 	@PutMapping(value="/category/{id}", consumes={MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE}, produces={MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
-	@ApiOperation(value="Updates category by ID", notes="This request updates specified category with name passed and present in database")
+	@Operation(summary="Updates category by ID", description="This request updates specified category with name passed and present in database")
 	public ResponseEntity<CategoryDto> updateCategory(@Valid @RequestHeader("Authorization") String authToken, @PathVariable("id") Long id, @RequestBody CategoryDto category){
 if(!userServiceDelegate.isLoggedInUser(authToken)) {
 			
@@ -87,7 +89,7 @@ if(!userServiceDelegate.isLoggedInUser(authToken)) {
 		return new ResponseEntity<CategoryDto>(HttpStatus.BAD_REQUEST);
     }
 	@DeleteMapping(value="/category/{id}")
-    @ApiOperation(value="Deletes category by ID", notes= "This request deletes specifies category with mentioned Id BY THE USER that is present in the database")
+    @Operation(summary="Deletes category by ID", description= "This request deletes specifies category with mentioned Id BY THE USER that is present in the database")
     public ResponseEntity<Boolean> DeleteCategoryById(@RequestHeader("Authorization") String authToken,@PathVariable("id") long id ){
 		if (!userServiceDelegate.isLoggedInUser(authToken)) {
 	           throw new InvalidAuthorizationTokenException(authToken);
