@@ -14,6 +14,9 @@
 	<name>DF-UserManagement</name>
 	<description>Demo project for Spring Boot</description>
 	<properties>
+		<sonar.host.url>http://localhost:9000/</sonar.host.url>
+		<sonar.login>admin</sonar.login>
+		<sonar.password>admin123</sonar.password>
 		<java.version>11</java.version>
 		<spring-cloud.version>2021.0.4</spring-cloud.version>
 	</properties>
